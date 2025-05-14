@@ -1,50 +1,12 @@
+# React + Vite
 
-# StockSight – Dashboard Inventaris Produk
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Deskripsi
-StockSight adalah aplikasi web dashboard untuk mencatat dan memantau stok produk berdasarkan kategori.
-Didesain untuk toko kecil, UKM, atau keperluan inventaris pribadi, aplikasi ini menyediakan antarmuka yang
-intuitif dengan fitur CRUD lengkap untuk entitas Produk dan Kategori.
+Currently, two official plugins are available:
 
-## Fitur-Fitur Utama
-- Autentikasi pengguna (Login)
-- CRUD Produk:
-  - Tambah produk baru
-  - Lihat daftar produk
-  - Edit dan hapus produk
-  - Kategori relasional
-- CRUD Kategori:
-  - Tambah, lihat, edit, hapus kategori
-- Navigasi antar halaman (React Router)
-- UI/UX responsif (Tailwind CSS)
-- Integrasi backend menggunakan Axios
-- (Opsional) Visualisasi data stok (grafik)
-- Unit testing untuk fungsi backend kritis (≥60% coverage)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Teknologi yang Digunakan
-### Backend
-- Python Pyramid
-- PostgreSQL
-- RESTful API
-- Basic Authentication
-- Unit Testing
+## Expanding the ESLint configuration
 
-### Frontend
-- React JS
-- Functional Components dan Hooks
-- React Router DOM
-- Context API untuk State Management
-- Tailwind CSS
-- Axios
-
-## Struktur Folder
-```
-Will be revealed soon
-```
-
-## Instalasi & Setup (Coming Soon)
-Silakan cek file README mendatang untuk setup backend dan frontend secara lengkap.
-
-## Author
-Nama: Jhoel Robert Sugiono Hutagalung  
-NIM : 122140174
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
