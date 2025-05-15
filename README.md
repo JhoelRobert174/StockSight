@@ -68,7 +68,6 @@ intuitif, responsif, dan mendukung manajemen data produk dan kategori dengan efi
 ├── utils/ # Auth helper, constants
 ├── App.jsx
 ├── main.jsx
-## Struktur Folder
 ```
 
 ## Instalasi & Setup (Coming Soon)
