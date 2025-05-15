@@ -48,3 +48,5 @@ Silakan cek file README mendatang untuk setup backend dan frontend secara lengka
 ## Author
 Nama: Jhoel Robert Sugiono Hutagalung  
 NIM : 122140174
+
+> Project ini sebelumnya dikembangkan di akun lain (Arkyna), dimirror ke akun resmi (JhoelRobert174) untuk kebutuhan akademik, dapat di check pada Contributors.

@@ -15,6 +15,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
+    "react-window": "^1.8.11",
     "recharts": "^2.15.3",
     "stocksight": "file:",
     "tailwindcss": "^4.1.6"

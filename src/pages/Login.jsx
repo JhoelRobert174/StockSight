@@ -17,7 +17,7 @@ function Login() {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          StockSight Login
+          Login
         </h2>
 
         <input

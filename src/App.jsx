@@ -6,6 +6,8 @@ import KategoriList from "./pages/KategoriList"
 import ProdukForm from "./pages/ProdukForm"
 import Layout from "./components/Layout"
 import KategoriForm from "./pages/KategoriForm"
+import LogAktivitas from './pages/LogAktivitas'
+import Pengaturan from './pages/Pengaturan'
 
 function App() {
   return (
@@ -76,6 +78,22 @@ function App() {
           element={
             <Layout>
               <KategoriForm />
+            </Layout>
+          }
+        />
+        <Route
+          path="/log"
+          element={
+            <Layout>
+              <LogAktivitas />
+            </Layout>
+          }
+        />
+        <Route
+          path="/pengaturan"
+          element={
+            <Layout>
+              <Pengaturan />
             </Layout>
           }
         />

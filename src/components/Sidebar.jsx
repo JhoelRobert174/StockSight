@@ -4,8 +4,7 @@ function Sidebar() {
   const { pathname } = useLocation()
 
   const linkClass = (path) =>
-    `block px-4 py-2 rounded hover:bg-blue-100 ${
-      pathname === path ? "bg-blue-200 font-bold" : ""
+    `block px-4 py-2 rounded hover:bg-blue-100 ${pathname === path ? "bg-blue-200 font-bold" : ""
     }`
 
   return (
@@ -15,8 +14,12 @@ function Sidebar() {
         <Link to="/dashboard" className={linkClass("/dashboard")}>Dashboard</Link>
         <Link to="/produk" className={linkClass("/produk")}>Produk</Link>
         <Link to="/kategori" className={linkClass("/kategori")}>Kategori</Link>
-        <Link to="/login" className="block px-4 py-2 rounded text-red-500 hover:bg-red-100 mt-4">Logout</Link>
+        <Link to="/log" className={linkClass("/log")}>Log Aktivitas</Link>
+        <Link to="/pengaturan" className={linkClass("/pengaturan")}>Pengaturan</Link>
+        <Link to="/login" className="block px-4 py-2 rounded text-red-500 hover:bg-red-100 mt-4"
+        > Logout </Link>
       </nav>
+
     </aside>
   )
 }
