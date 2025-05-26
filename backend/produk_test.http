@@ -1,0 +1,85 @@
+### ✅ POST kategori dulu
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": "Sembako"
+}
+
+### ✅ POST produk
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Beras Lucu",
+  "stok": 50,
+  "harga": 20000,
+  "kategori_id": 1
+}
+
+### ❌ POST produk tanpa nama
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "stok": 10,
+  "harga": 10000,
+  "kategori_id": 1
+}
+
+### ❌ POST produk harga negatif
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Gula",
+  "stok": 10,
+  "harga": -5000,
+  "kategori_id": 1
+}
+
+### ❌ POST produk kategori tidak ada
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Tepung",
+  "stok": 10,
+  "harga": 3000,
+  "kategori_id": 999
+}
+
+### ✅ GET semua produk
+GET http://localhost:6543/produk
+Accept: application/json
+
+### ✅ GET detail produk
+GET http://localhost:6543/produk/1
+Accept: application/json
+
+### ❌ GET produk tidak ada
+GET http://localhost:6543/produk/999
+Accept: application/json
+
+### ✅ PUT produk
+PUT http://localhost:6543/produk/1
+Content-Type: application/json
+
+{
+  "nama": "Beras Super",
+  "stok": 75,
+  "harga": 25000,
+  "kategori_id": 1
+}
+
+### ❌ PUT harga negatif
+PUT http://localhost:6543/produk/1
+Content-Type: application/json
+
+{
+  "harga": -1000
+}
+
+### ✅ DELETE produk
+DELETE http://localhost:6543/produk/1
+Accept: application/json

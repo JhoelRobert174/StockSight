@@ -1,0 +1,102 @@
+### ❌ POST kategori kosong
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": "   "
+}
+
+
+### ❌ POST kategori duplikat
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": "Sembako"
+}
+
+
+### ❌ POST produk tanpa nama
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "stok": 10,
+  "harga": 5000,
+  "kategori_id": 1
+}
+
+
+### ❌ POST produk dengan harga negatif
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Produk Aneh",
+  "stok": 5,
+  "harga": -100,
+  "kategori_id": 1
+}
+
+
+### ❌ POST produk dengan stok negatif
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Produk B",
+  "stok": -10,
+  "harga": 5000,
+  "kategori_id": 1
+}
+
+
+### ❌ POST produk dengan kategori_id tidak ada
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Produk Invalid",
+  "stok": 5,
+  "harga": 5000,
+  "kategori_id": 999
+}
+
+
+### ✅ POST produk valid (stok = 0, edge case)
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Produk Kosong",
+  "stok": 0,
+  "harga": 12345,
+  "kategori_id": 1
+}
+
+
+### ❌ PUT produk update nama jadi kosong
+PUT http://localhost:6543/produk/1
+Content-Type: application/json
+
+{
+  "nama": " "
+}
+
+
+### ❌ PUT kategori update nama jadi kosong
+PUT http://localhost:6543/kategori/1
+Content-Type: application/json
+
+{
+  "nama": ""
+}
+
+
+### ❌ PUT kategori update jadi nama yang sudah dipakai
+PUT http://localhost:6543/kategori/1
+Content-Type: application/json
+
+{
+  "nama": "Sembako"
+}

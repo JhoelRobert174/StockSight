@@ -1,0 +1,64 @@
+### ✅ POST produk dulu
+POST http://localhost:6543/produk
+Content-Type: application/json
+
+{
+  "nama": "Garam",
+  "stok": 10,
+  "harga": 2000,
+  "kategori_id": 1
+}
+
+### ✅ Mutasi masuk
+POST http://localhost:6543/produk/2/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "masuk",
+  "jumlah": 5
+}
+
+### ✅ Mutasi keluar
+POST http://localhost:6543/produk/2/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "keluar",
+  "jumlah": 3
+}
+
+### ❌ Mutasi keluar stok tidak cukup
+POST http://localhost:6543/produk/2/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "keluar",
+  "jumlah": 999
+}
+
+### ❌ Mutasi jumlah negatif
+POST http://localhost:6543/produk/2/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "masuk",
+  "jumlah": -5
+}
+
+### ❌ Mutasi aksi salah
+POST http://localhost:6543/produk/2/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "transfer",
+  "jumlah": 5
+}
+
+### ❌ Mutasi produk tidak ditemukan
+POST http://localhost:6543/produk/999/mutasi
+Content-Type: application/json
+
+{
+  "aksi": "keluar",
+  "jumlah": 5
+}

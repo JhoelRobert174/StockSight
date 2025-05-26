@@ -1,0 +1,63 @@
+### ✅ POST kategori
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": "Sembako"
+}
+
+### ❌ POST kategori duplikat
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": "Sembako"
+}
+
+### ❌ POST kategori nama kosong
+POST http://localhost:6543/kategori
+Content-Type: application/json
+
+{
+  "nama": " "
+}
+
+### ✅ GET semua kategori
+GET http://localhost:6543/kategori
+Accept: application/json
+
+### ✅ GET detail kategori
+GET http://localhost:6543/kategori/1
+Accept: application/json
+
+### ❌ GET kategori tidak ada
+GET http://localhost:6543/kategori/999
+Accept: application/json
+
+### ✅ PUT update kategori
+PUT http://localhost:6543/kategori/1
+Content-Type: application/json
+
+{
+  "nama": "Sembako Premium"
+}
+
+### ❌ PUT nama kosong
+PUT http://localhost:6543/kategori/1
+Content-Type: application/json
+
+{
+  "nama": "   "
+}
+
+### ❌ PUT kategori tidak ada
+PUT http://localhost:6543/kategori/999
+Content-Type: application/json
+
+{
+  "nama": "Invalid"
+}
+
+### ✅ DELETE kategori
+DELETE http://localhost:6543/kategori/1
+Accept: application/json
