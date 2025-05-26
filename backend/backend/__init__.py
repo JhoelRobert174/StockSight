@@ -10,6 +10,8 @@ def main(global_config, **settings):
         config.include('.models')
         config.include('.routes')
         config.add_renderer('json', JSON())
+        config.add_route('register', '/register')
+        config.add_route('login', '/login')
         config.add_route('produk_list', '/produk')
         config.add_route('produk_detail', '/produk/{id}')
         config.add_route('produk_create', '/produk')          # POST

@@ -5,7 +5,7 @@ import zope.sqlalchemy
 from .meta import Base
 
 # Import or define all models here to ensure they are attached to the Base.metadata
-from .mymodel import MyModel
+from .user import User
 from .produk import Produk
 from .kategori import Kategori  # flake8: noqa
 
