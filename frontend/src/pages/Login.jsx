@@ -1,13 +1,22 @@
 import { useState } from "react"
+import { useAuth } from "../context/useAuth"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Login:", { username, password })
-    // TODO: Tambahkan autentikasi nanti
+    try {
+      await login(username, password)
+      console.log("Login sukses")
+      navigate("/dashboard")
+    } catch (err) {
+      console.error("Login error:", err.message)
+    }
   }
 
   return (
@@ -42,6 +51,10 @@ function Login() {
         >
           Masuk
         </button>
+        <p className="mt-4 text-center">
+          Belum punya akun? <a href="/register" className="text-blue-600 underline">Daftar di sini</a>
+        </p>
+
       </form>
     </div>
   )

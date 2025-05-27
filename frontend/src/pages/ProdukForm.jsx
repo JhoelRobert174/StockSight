@@ -1,45 +1,100 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
+import { API_BASE } from "../constants/config"
 
 function ProdukForm() {
   const navigate = useNavigate()
-  const { id } = useParams() // jika edit
+  const { id } = useParams()
   const isEdit = !!id
 
   const [form, setForm] = useState({
     nama: "",
-    kategori: "",
+    kategori_id: "",
     stok: "",
     harga: "",
   })
+  const [kategoriList, setKategoriList] = useState([])
+  const [loading, setLoading] = useState(isEdit)
+  const [error, setError] = useState(null)
 
-  // Dummy fetch data produk
+  useEffect(() => {
+    fetch(`${API_BASE}/kategori`, { credentials: "include" })
+      .then(res => res.ok ? res.json() : Promise.reject("Gagal ambil kategori"))
+      .then(data => setKategoriList(data))
+      .catch(() => setKategoriList([]))
+  }, [])
+
+
   useEffect(() => {
     if (isEdit) {
-      // Simulasi ambil data berdasarkan ID
-      setForm({
-        nama: "Sabun Mandi",
-        kategori: "Kebutuhan Rumah",
-        stok: "12",
-        harga: "8000",
-      })
+      fetch(`${API_BASE}/produk/${id}`, { credentials: "include" })
+        .then(res => res.ok ? res.json() : Promise.reject("Gagal ambil produk"))
+        .then(data => {
+          setForm({
+            nama: data.nama,
+            kategori_id: kategoriList.find(k => k.nama === data.kategori)?.id || "",
+            stok: data.stok,
+            harga: data.harga
+          })
+          setLoading(false)
+        })
+        .catch(err => setError(err))
     }
-  }, [isEdit])
+  }, [id, isEdit, kategoriList])
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setForm({ ...form, [name]: value })
+    setForm({
+      ...form,
+      [name]: ["stok", "harga", "kategori_id"].includes(name) ? parseInt(value) : value
+    })
+
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(isEdit ? "Edit Produk" : "Tambah Produk", form)
-    navigate("/produk")
+    setError(null)
+    if (!form.kategori_id || isNaN(form.kategori_id)) {
+      setError("Kategori belum dipilih atau tidak valid.")
+      return
+    }
+
+
+    const url = isEdit ? `${API_BASE}/produk/${id}` : `${API_BASE}/produk`
+    const method = isEdit ? "PUT" : "POST"
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(form)
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Gagal simpan produk")
+
+      navigate("/produk")
+    } catch (err) {
+      console.error(err)
+      setError(err.message)
+    }
   }
+
+  if (isEdit && loading) return <div>Loading...</div>
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">{isEdit ? "Edit" : "Tambah"} Produk</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">
+        {isEdit ? "Edit" : "Tambah"} Produk
+      </h1>
+
+      {error && (
+        <div className="mb-4 text-red-600 bg-red-100 px-4 py-2 rounded">
+          {error}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="nama"
@@ -48,13 +103,19 @@ function ProdukForm() {
           placeholder="Nama Produk"
           className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
         />
-        <input
-          name="kategori"
-          value={form.kategori}
+
+        <select
+          name="kategori_id"
+          value={form.kategori_id}
           onChange={handleChange}
-          placeholder="Kategori"
           className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
-        />
+        >
+          <option value="">-- Pilih Kategori --</option>
+          {kategoriList.map(k => (
+            <option key={k.id} value={k.id}>{k.nama}</option>
+          ))}
+        </select>
+
         <input
           name="stok"
           type="number"
@@ -63,6 +124,7 @@ function ProdukForm() {
           placeholder="Stok"
           className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
         />
+
         <input
           name="harga"
           type="number"

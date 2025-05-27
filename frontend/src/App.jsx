@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Login from "./pages/Login"
+import Register from "./pages/Register"
+import ProtectedRoute from "./components/ProtectedRoute"
+import ProtectedLayout from "./components/ProtectedLayout"
 import Dashboard from "./pages/Dashboard"
 import ProdukList from "./pages/ProdukList"
 import KategoriList from "./pages/KategoriList"
@@ -14,90 +17,82 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/login" />} />
 
         <Route
           path="/dashboard"
           element={
-            <Layout>
+            <ProtectedLayout>
               <Dashboard />
-            </Layout>
-          }
-        />
-        <Route
-          path="/produk"
-          element={
-            <Layout>
-              <ProdukList />
-            </Layout>
+            </ProtectedLayout>
           }
         />
 
         <Route
+          path="/produk"
+          element={
+            <ProtectedLayout>
+              <ProdukList />
+            </ProtectedLayout>
+          }
+        />
+        <Route
           path="/kategori"
           element={
-            <Layout>
+            <ProtectedLayout>
               <KategoriList />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/produk/tambah"
           element={
-            <Layout>
+            <ProtectedLayout>
               <ProdukForm />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/produk/edit/:id"
           element={
-            <Layout>
+            <ProtectedLayout>
               <ProdukForm />
-            </Layout>
-          }
-        />
-        <Route
-          path="/kategori"
-          element={
-            <Layout>
-              <KategoriList />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/kategori/tambah"
           element={
-            <Layout>
+            <ProtectedLayout>
               <KategoriForm />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/kategori/edit/:id"
           element={
-            <Layout>
+            <ProtectedLayout>
               <KategoriForm />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/log"
           element={
-            <Layout>
+            <ProtectedLayout>
               <LogAktivitas />
-            </Layout>
+            </ProtectedLayout>
           }
         />
         <Route
           path="/pengaturan"
           element={
-            <Layout>
+            <ProtectedLayout>
               <Pengaturan />
-            </Layout>
+            </ProtectedLayout>
           }
         />
-
       </Routes>
     </BrowserRouter>
   )

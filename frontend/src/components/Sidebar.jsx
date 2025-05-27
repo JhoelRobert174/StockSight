@@ -1,11 +1,18 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/useAuth"
 
 function Sidebar() {
   const { pathname } = useLocation()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
 
   const linkClass = (path) =>
-    `block px-4 py-2 rounded hover:bg-blue-100 ${pathname === path ? "bg-blue-200 font-bold" : ""
-    }`
+    `block px-4 py-2 rounded hover:bg-blue-100 ${pathname === path ? "bg-blue-200 font-bold" : ""}`
+
+  const handleLogout = async () => {
+    await logout()         // 🔥 API call ke /logout + setUser(null)
+    navigate("/login")     // 🚪 Redirect manual
+  }
 
   return (
     <aside className="w-64 h-screen bg-white shadow-md fixed">
@@ -16,10 +23,14 @@ function Sidebar() {
         <Link to="/kategori" className={linkClass("/kategori")}>Kategori</Link>
         <Link to="/log" className={linkClass("/log")}>Log Aktivitas</Link>
         <Link to="/pengaturan" className={linkClass("/pengaturan")}>Pengaturan</Link>
-        <Link to="/login" className="block px-4 py-2 rounded text-red-500 hover:bg-red-100 mt-4"
-        > Logout </Link>
-      </nav>
 
+        <button
+          onClick={handleLogout}
+          className="block text-left px-4 py-2 rounded text-red-500 hover:bg-red-100 mt-4"
+        >
+          Logout
+        </button>
+      </nav>
     </aside>
   )
 }

@@ -1,0 +1,52 @@
+Folder PATH listing for volume Data
+Volume serial number is 0A83-963D
+D:.
+�   .gitignore
+�   eslint.config.js
+�   index.html
+�   package-lock.json
+�   package.json
+�   struktur.txt
+�   tailwind.config.js
+�   vite.config.js
+�   
++---public
+�       vite.svg
+�       
++---src
+    �   App.jsx
+    �   index.css
+    �   main.jsx
+    �   styles.css
+    �   
+    +---assets
+    �       react.svg
+    �       
+    +---components
+    �       Layout.jsx
+    �       Modal.jsx
+    �       Navbar.jsx
+    �       Sidebar.jsx
+    �       TableProduk.jsx
+    �       
+    +---context
+    �       AuthContext.jsx
+    �       DataContext.jsx
+    �       
+    +---pages
+    �       Dashboard.jsx
+    �       KategoriForm.jsx
+    �       KategoriList.jsx
+    �       LogAktivitas.jsx
+    �       Login.jsx
+    �       Pengaturan.jsx
+    �       ProdukForm.jsx
+    �       ProdukList.jsx
+    �       
+    +---services
+    �       apiKategori.js
+    �       apiProduk.js
+    �       
+    +---utils
+            authHeader.js
+            

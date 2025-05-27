@@ -7,7 +7,9 @@ from .meta import Base
 # Import or define all models here to ensure they are attached to the Base.metadata
 from .user import User
 from .produk import Produk
-from .kategori import Kategori  # flake8: noqa
+from .kategori import Kategori
+from .harga_produk import HargaProduk
+from .log_aktivitas import LogAktivitas  # flake8: noqa
 
 configure_mappers()
 

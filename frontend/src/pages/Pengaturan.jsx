@@ -1,24 +1,38 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function Pengaturan() {
   const [namaToko, setNamaToko] = useState("StockSight Store")
   const [darkMode, setDarkMode] = useState(false)
 
+  useEffect(() => {
+    const storedDarkMode = localStorage.getItem("darkMode") === "true"
+    setDarkMode(storedDarkMode)
+  }, [])
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }, [darkMode])
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert("Pengaturan disimpan (simulasi).")
+    localStorage.setItem("darkMode", darkMode.toString())
+    alert("Pengaturan disimpan!")
   }
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">Pengaturan</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Pengaturan</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nama Toko</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Toko</label>
           <input
             value={namaToko}
             onChange={(e) => setNamaToko(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -29,7 +43,7 @@ function Pengaturan() {
             onChange={() => setDarkMode(!darkMode)}
             className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
-          <label htmlFor="darkMode" className="text-sm text-gray-700">
+          <label htmlFor="darkMode" className="text-sm text-gray-700 dark:text-gray-300">
             Aktifkan Mode Gelap
           </label>
         </div>

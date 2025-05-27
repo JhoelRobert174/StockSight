@@ -3,7 +3,9 @@ from pyramid.response import Response
 from sqlalchemy.exc import DBAPIError
 from backend.models.produk import Produk
 from backend.models.kategori import Kategori
-from ..utils import apply_pagination  # atau sesuai path filenya
+from ..utils import apply_pagination
+from backend.models.harga_produk import HargaProduk
+from backend.utils import log_aksi  # atau sesuai path filenya
 
 @view_config(route_name='produk_by_kategori', renderer='json', request_method='GET')
 def produk_by_kategori(request):
@@ -131,7 +133,11 @@ def get_all_produk(request):
             'stok': p.stok,
             'harga': float(p.harga),
             'kategori': p.kategori.nama if p.kategori else None,
-            'created_at': p.created_at.isoformat()
+            'created_at': p.created_at.isoformat(),  # ← KOMA DI SINI WAJIB
+            'hargaHistory': [
+                {'waktu': h.tanggal.isoformat(), 'harga': h.harga}
+                for h in p.harga_histories
+            ]
         } for p in produk_list],
         'meta': {
             'page': page,
@@ -140,6 +146,7 @@ def get_all_produk(request):
             'pages': (total + limit - 1) // limit
         }
     }
+
 
 
 @view_config(route_name='produk_list', renderer='json', request_method='POST')
@@ -188,6 +195,10 @@ def create_produk(request):
     )
     session.add(produk)
     session.flush()
+    session.add(HargaProduk(produk_id=produk.id, harga=produk.harga))
+
+    # ⬇ Tambahkan ini
+    log_aksi(session, f"Menambahkan Produk: {produk.nama}")
 
     return {'message': 'Produk berhasil ditambahkan', 'id': produk.id}
 
@@ -233,7 +244,12 @@ def update_produk(request):
     if 'harga' in data:
         if not isinstance(data['harga'], (int, float)) or data['harga'] < 0:
             return Response(json_body={'error': 'Harga harus berupa angka ≥ 0'}, status=400)
-        produk.harga = float(data['harga'])
+    
+        new_harga = float(data['harga'])
+        if produk.harga != new_harga:
+            produk.harga = new_harga
+            session.add(HargaProduk(produk_id=produk.id, harga=new_harga))
+
 
     if 'stok' in data:
         if not isinstance(data['stok'], int) or data['stok'] < 0:
@@ -245,8 +261,11 @@ def update_produk(request):
         if not kategori:
             return Response(json_body={'error': 'Kategori tidak ditemukan'}, status=400)
         produk.kategori_id = kategori.id
+   
+    log_aksi(session, f"Mengubah Produk: {produk.nama}")
 
     return {'message': 'Produk berhasil diperbarui'}
+
 
 @view_config(route_name='produk_detail', renderer='json', request_method='DELETE')
 def delete_produk(request):
@@ -257,4 +276,23 @@ def delete_produk(request):
         return Response(json_body={'error': 'Produk tidak ditemukan'}, status=404)
 
     session.delete(produk)
+
+    log_aksi(session, f"Menghapus Produk: {produk.nama}")
+    
     return {'message': 'Produk berhasil dihapus'}
+
+@view_config(route_name='produk_list', request_method='OPTIONS', renderer='json')
+def produk_list_options(request):
+    return Response(status=204)
+
+@view_config(route_name='produk_detail', request_method='OPTIONS', renderer='json')
+def produk_detail_options(request):
+    return Response(status=204)
+
+@view_config(route_name='produk_mutasi', request_method='OPTIONS', renderer='json')
+def produk_mutasi_options(request):
+    return Response(status=204)
+
+@view_config(route_name='produk_by_kategori', request_method='OPTIONS', renderer='json')
+def produk_by_kategori_options(request):
+    return Response(status=204)
