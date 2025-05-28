@@ -11,6 +11,7 @@ import Layout from "./components/Layout"
 import KategoriForm from "./pages/KategoriForm"
 import LogAktivitas from './pages/LogAktivitas'
 import Pengaturan from './pages/Pengaturan'
+import MutasiProdukForm from "./pages/MutasiProdukForm"
 
 function App() {
   return (
@@ -77,6 +78,15 @@ function App() {
             </ProtectedLayout>
           }
         />
+        <Route
+          path="/produk/:id/mutasi"
+          element={
+            <ProtectedLayout>
+              <MutasiProdukForm />
+            </ProtectedLayout>
+          }
+        />
+
         <Route
           path="/log"
           element={

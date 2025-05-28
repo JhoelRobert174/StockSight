@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     })
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
-        setUser(data ?? null)  // ⬅️ Force null
+        setUser(data ?? null)
         setLoading(false)
       })
       .catch(() => setLoading(false))

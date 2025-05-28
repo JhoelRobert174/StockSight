@@ -87,35 +87,35 @@ function KategoriForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div> {/* Tambahan div untuk label jika diperlukan di masa depan */}
           {/* <label htmlFor="nama" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kategori</label> */}
-          <input
+          <Input
             id="nama" // Tambah id untuk accessibility dengan label
             name="nama" // Tambah name attribute
             value={nama}
             onChange={(e) => setNama(e.target.value)}
             placeholder="Nama Kategori"
             // Class input disamakan dengan ProdukForm.jsx (px-3)
-            className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            variant="dry" // Menggunakan variant "dry" untuk konsistensi
             disabled={loading && !isEdit} // Disable input saat loading tambah baru
           />
         </div>
         <div className="flex justify-between">
-          <button
+          <Button
             type="submit"
             // Class tombol simpan disamakan dengan ProdukForm.jsx
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" // transition-colors adalah praktik baik
+            color="blue"
             disabled={loading} // Disable tombol saat loading
           >
             {loading ? (isEdit ? 'Menyimpan...' : 'Menambahkan...') : 'Simpan'}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => navigate("/kategori")}
-            // Class tombol batal disamakan dengan ProdukForm.jsx, dengan penyesuaian hover & text dark mode
-            className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            color="red"
+            variant="outline"
             disabled={loading} // Disable tombol saat loading
           >
             Batal
-          </button>
+          </Button>
         </div>
       </form>
     </div>

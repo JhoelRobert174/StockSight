@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { API_BASE } from "../constants/config"
-import { Button, Input } from "@/components/ui"
+import { Button, Input, Select } from "@/components/ui"
+import { PageWrapper } from "../components/ui"
 
 function ProdukForm() {
   const navigate = useNavigate()
@@ -84,76 +85,74 @@ function ProdukForm() {
 
   if (isEdit && loading) return <div>Loading...</div>
 
-  return (
-<div className="max-w-xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-  <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-    {isEdit ? "Edit" : "Tambah"} Produk
-  </h1>
+return (
+  <PageWrapper title={isEdit ? "Edit Produk" : "Tambah Produk"}>
+    {error && (
+      <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
+        {error}
+      </div>
+    )}
 
-  {error && (
-    <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
-      {error}
-    </div>
-  )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        name="nama"
+        value={form.nama}
+        onChange={handleChange}
+        placeholder="Nama Produk"
+        variant="dry"
+        type="text"
+      />
 
-  <form onSubmit={handleSubmit} className="space-y-4">
-    <input
-      name="nama"
-      value={form.nama}
-      onChange={handleChange}
-      placeholder="Nama Produk"
-      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <select
-      name="kategori_id"
-      value={form.kategori_id}
-      onChange={handleChange}
-      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="">-- Pilih Kategori --</option>
-      {kategoriList.map(k => (
-        <option key={k.id} value={k.id}>{k.nama}</option>
-      ))}
-    </select>
-
-    <input
-      name="stok"
-      type="number"
-      value={form.stok}
-      onChange={handleChange}
-      placeholder="Stok"
-      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <input
-      name="harga"
-      type="number"
-      value={form.harga}
-      onChange={handleChange}
-      placeholder="Harga"
-      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <div className="flex justify-between">
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      <Select
+        name="kategori_id"
+        value={form.kategori_id}
+        onChange={handleChange}
+        variant="dry"
       >
-        Simpan
-      </button>
-      <button
-        type="button"
-        onClick={() => navigate("/produk")}
-        className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white"
-      >
-        Batal
-      </button>
-    </div>
-  </form>
-</div>
+        <option value="">-- Pilih Kategori --</option>
+        {kategoriList.map(k => (
+          <option key={k.id} value={k.id}>{k.nama}</option>
+        ))}
+      </Select>
 
-  )
+      <Input
+        name="stok"
+        type="number"
+        value={form.stok}
+        onChange={handleChange}
+        placeholder="Stok"
+        variant="dry"
+      />
+
+      <Input
+        name="harga"
+        type="number"
+        value={form.harga}
+        onChange={handleChange}
+        placeholder="Harga"
+        variant="dry"
+      />
+
+      <div className="flex justify-between">
+        <Button
+          type="submit"
+          color="blue"
+          variant="default"
+        >
+          Simpan
+        </Button>
+        <Button
+          type="button"
+          onClick={() => navigate("/produk")}
+          color="red"
+          variant="outline"
+        >
+          Batal
+        </Button>
+      </div>
+    </form>
+  </PageWrapper>
+)
 }
 
 export default ProdukForm
