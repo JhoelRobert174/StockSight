@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode autofill */
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important; /* gray-900 */
+}
+
+/* Dark mode autofill */
+.dark input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #1f2937 inset !important; /* gray-800 */
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Optional: Autofill focus style (light) */
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #e0f2fe inset !important; /* optional light focus */
+}
+
+/* Optional: Autofill focus style (dark) */
+.dark input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #1e3a8a inset !important; /* blue-900 */
+}

@@ -30,15 +30,14 @@ function LogAktivitas() {
       })
   }, [page, limit])
 
-  if (loading) return <p className="text-center">Memuat log aktivitas...</p>
-  if (error) return <p className="text-center text-red-500">❌ {error}</p>
+  if (loading) return <p className="text-center text-gray-700 dark:text-gray-300">Memuat log aktivitas...</p>
+  if (error) return <p className="text-center text-red-500 dark:text-red-400">❌ {error}</p>
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      {/* Header: Title + Limit Selector */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">Log Aktivitas</h1>
-        <div className="text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Log Aktivitas</h1>
+        <div className="text-sm text-gray-600 dark:text-gray-300">
           Tampilkan{" "}
           <select
             value={limit}
@@ -46,7 +45,7 @@ function LogAktivitas() {
               setLimit(Number(e.target.value))
               setPage(1)
             }}
-            className="px-2 py-1 border border-gray-300 rounded"
+            className="px-2 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white rounded"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -57,14 +56,13 @@ function LogAktivitas() {
         </div>
       </div>
 
-      {/* Log List */}
-      <div className="bg-white shadow-md rounded-xl divide-y">
+      <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl divide-y divide-gray-200 dark:divide-gray-700 transition">
         {logs.length === 0 ? (
-          <div className="p-4 text-gray-500 text-center">Tidak ada log ditemukan.</div>
+          <div className="p-4 text-gray-500 dark:text-gray-400 text-center">Tidak ada log ditemukan.</div>
         ) : (
           logs.map((log, i) => (
-            <div key={i} className="p-4 hover:bg-gray-50">
-              <div className="text-sm text-gray-600">
+            <div key={i} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
                 {new Date(log.waktu).toLocaleString("id-ID", {
                   day: "numeric",
                   month: "long",
@@ -73,20 +71,18 @@ function LogAktivitas() {
                   minute: "2-digit"
                 })}
               </div>
-              <div className="font-medium text-gray-800">{log.aksi}</div>
+              <div className="font-medium text-gray-800 dark:text-white">{log.aksi}</div>
             </div>
           ))
         )}
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
-        {/* ← Nomor → */}
         <div className="flex flex-wrap justify-center items-center gap-2">
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded disabled:opacity-50 transition"
           >
             ←
           </button>
@@ -95,10 +91,11 @@ function LogAktivitas() {
             <button
               key={p}
               onClick={() => setPage(p)}
-              className={`px-3 py-1 rounded ${p === page
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
-                }`}
+              className={`px-3 py-1 rounded transition ${
+                p === page
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+              }`}
             >
               {p}
             </button>
@@ -107,20 +104,19 @@ function LogAktivitas() {
           <button
             onClick={() => setPage(p => p + 1)}
             disabled={page >= totalPages}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded disabled:opacity-50 transition"
           >
             →
           </button>
         </div>
 
-        {/* Lompat Halaman */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Lompat ke halaman:</span>
+          <span className="text-sm text-gray-600 dark:text-gray-300">Lompat ke halaman:</span>
           <input
             type="number"
             value={gotoPage}
             onChange={(e) => setGotoPage(e.target.value)}
-            className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+            className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-white rounded transition"
             min={1}
             max={totalPages}
           />
@@ -132,7 +128,7 @@ function LogAktivitas() {
               }
               setGotoPage("")
             }}
-            className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+            className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm transition"
           >
             Lompat
           </button>

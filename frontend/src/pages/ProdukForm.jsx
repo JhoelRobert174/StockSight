@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { API_BASE } from "../constants/config"
+import { Button, Input } from "@/components/ui"
 
 function ProdukForm() {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ function ProdukForm() {
   useEffect(() => {
     fetch(`${API_BASE}/kategori`, { credentials: "include" })
       .then(res => res.ok ? res.json() : Promise.reject("Gagal ambil kategori"))
-      .then(data => setKategoriList(data))
+      .then(data => setKategoriList(data.data || []))
       .catch(() => setKategoriList([]))
   }, [])
 
@@ -84,66 +85,74 @@ function ProdukForm() {
   if (isEdit && loading) return <div>Loading...</div>
 
   return (
-    <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">
-        {isEdit ? "Edit" : "Tambah"} Produk
-      </h1>
+<div className="max-w-xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+  <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+    {isEdit ? "Edit" : "Tambah"} Produk
+  </h1>
 
-      {error && (
-        <div className="mb-4 text-red-600 bg-red-100 px-4 py-2 rounded">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="nama"
-          value={form.nama}
-          onChange={handleChange}
-          placeholder="Nama Produk"
-          className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
-        />
-
-        <select
-          name="kategori_id"
-          value={form.kategori_id}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
-        >
-          <option value="">-- Pilih Kategori --</option>
-          {kategoriList.map(k => (
-            <option key={k.id} value={k.id}>{k.nama}</option>
-          ))}
-        </select>
-
-        <input
-          name="stok"
-          type="number"
-          value={form.stok}
-          onChange={handleChange}
-          placeholder="Stok"
-          className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
-        />
-
-        <input
-          name="harga"
-          type="number"
-          value={form.harga}
-          onChange={handleChange}
-          placeholder="Harga"
-          className="w-full px-3 py-2 border-gray-300 rounded focus:ring"
-        />
-
-        <div className="flex justify-between">
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Simpan
-          </button>
-          <button type="button" onClick={() => navigate("/produk")} className="px-4 py-2 rounded border-gray-300 focus:ring">
-            Batal
-          </button>
-        </div>
-      </form>
+  {error && (
+    <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
+      {error}
     </div>
+  )}
+
+  <form onSubmit={handleSubmit} className="space-y-4">
+    <input
+      name="nama"
+      value={form.nama}
+      onChange={handleChange}
+      placeholder="Nama Produk"
+      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <select
+      name="kategori_id"
+      value={form.kategori_id}
+      onChange={handleChange}
+      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">-- Pilih Kategori --</option>
+      {kategoriList.map(k => (
+        <option key={k.id} value={k.id}>{k.nama}</option>
+      ))}
+    </select>
+
+    <input
+      name="stok"
+      type="number"
+      value={form.stok}
+      onChange={handleChange}
+      placeholder="Stok"
+      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <input
+      name="harga"
+      type="number"
+      value={form.harga}
+      onChange={handleChange}
+      placeholder="Harga"
+      className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <div className="flex justify-between">
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Simpan
+      </button>
+      <button
+        type="button"
+        onClick={() => navigate("/produk")}
+        className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white"
+      >
+        Batal
+      </button>
+    </div>
+  </form>
+</div>
+
   )
 }
 

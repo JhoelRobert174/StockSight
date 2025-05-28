@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
+import PageWrapper from "../components/ui/PageWrapper"
+import { Button, Input, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
 
 function ProdukList() {
   const navigate = useNavigate()
@@ -30,7 +32,7 @@ function ProdukList() {
   }, [page, limit, searchTerm])
 
   useEffect(() => {
-    setPage(1) // reset halaman saat search atau limit berubah
+    setPage(1)
   }, [searchTerm, limit])
 
   const confirmDelete = async (id, nama) => {
@@ -52,34 +54,34 @@ function ProdukList() {
     }
   }
 
+  const title = "Daftar Produk"
+  const actions = (
+    <Button
+      onClick={() => navigate("/produk/tambah")}
+      color="blue"
+      variant="primaryAction"
+    >
+      + Tambah Produk
+    </Button>
+  )
+
   if (loading) return <div>Loading...</div>
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Daftar Produk</h1>
-        <button
-          onClick={() => navigate("/produk/tambah")}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md transition"
-        >
-          + Tambah Produk
-        </button>
-      </div>
-
+    <PageWrapper title={title} actions={actions}>
       <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
-        <input
+        <Input
           type="text"
           placeholder="Cari produk..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full sm:w-1/2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 dark:text-gray-300">
           Tampilkan{" "}
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="px-2 py-1 border rounded"
+            className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -90,88 +92,100 @@ function ProdukList() {
       </div>
 
       {produkList.length === 0 ? (
-        <div className="text-center text-gray-500 py-10">Tidak ada produk yang cocok.</div>
+        <div className="text-center text-gray-500 dark:text-gray-400 py-10">
+          Tidak ada produk yang cocok.
+        </div>
       ) : (
         <>
-          <table className="w-full bg-white rounded-xl overflow-hidden shadow-md text-sm">
-            <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
-              <tr>
-                <th className="px-6 py-3 text-left">Nama</th>
-                <th className="px-6 py-3 text-left">Kategori</th>
-                <th className="px-6 py-3 text-right">Stok</th>
-                <th className="px-6 py-3 text-right">Harga</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {produkList.map((produk) => (
-                <tr key={produk.id} className="hover:bg-gray-100 transition">
-                  <td className="px-6 py-3">{produk.nama}</td>
-                  <td className="px-6 py-3">{produk.kategori}</td>
-                  <td className="px-6 py-3 text-right">{produk.stok}</td>
-                  <td className="px-6 py-3 text-right">Rp {produk.harga.toLocaleString()}</td>
-                  <td className="px-6 py-3 text-center space-x-2">
-                    <button
-                      onClick={() => navigate(`/produk/edit/${produk.id}`)}
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => confirmDelete(produk.id, produk.nama)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
-                    >
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto rounded-xl shadow-md">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Nama</Th>
+                  <Th>Kategori</Th>
+                  <Th>Stok</Th>
+                  <Th>Harga</Th>
+                  <Th>Aksi</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {produkList.map((produk) => (
+                  <Tr key={produk.id}>
+                    <Td >{produk.nama}</Td>
+                    <Td >{produk.kategori}</Td>
+                    <Td >{produk.stok}</Td>
+                    <Td >Rp {produk.harga.toLocaleString()}</Td>
+                    <Td >
+                      <Button
+                        onClick={() => navigate(`/produk/edit/${produk.id}`)}
+                        color="yellow"
+                        variant="subtle"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => confirmDelete(produk.id, produk.nama)}
+                        color="red"
+                        variant="subtle"
+                      >
+                        Hapus
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </div>
 
-          {/* Pagination */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
             <div className="flex flex-wrap justify-center items-center gap-2">
-              <button
+              <Button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                color="gray"
+                variant="subtle"
+                className="dark:bg-gray-700"
               >
                 ←
-              </button>
+              </Button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                <button
+                <Button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`px-3 py-1 rounded ${p === page
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 hover:bg-gray-200"
-                    }`}
+                  color={p === page ? "blue" : "gray"}
+                  variant="subtle"
+                  className={
+                    p === page
+                      ? "text-white"
+                      : "bg-gray-100 dark:bg-gray-600 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-500"
+                  }
                 >
                   {p}
-                </button>
+                </Button>
               ))}
-              <button
+              <Button
                 onClick={() => setPage(p => p + 1)}
                 disabled={page >= totalPages}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                color="gray"
+                variant="subtle"
+                className="dark:bg-gray-700"
               >
                 →
-              </button>
+              </Button>
             </div>
 
-            {/* Jump to page */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Lompat ke halaman:</span>
-              <input
+              <span className="text-sm text-gray-600 dark:text-gray-300">Lompat ke halaman:</span>
+              <Input
                 type="number"
+                variant="compact"
                 value={gotoPage}
                 onChange={(e) => setGotoPage(e.target.value)}
-                className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm"
                 min={1}
                 max={totalPages}
               />
-              <button
+              <Button
                 onClick={() => {
                   const target = Number(gotoPage)
                   if (!isNaN(target) && target >= 1 && target <= totalPages) {
@@ -179,16 +193,18 @@ function ProdukList() {
                   }
                   setGotoPage("")
                 }}
-                className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+                color="blue"
+                variant="subtle"
               >
                 Lompat
-              </button>
+              </Button>
             </div>
           </div>
         </>
       )}
-    </div>
+    </PageWrapper>
   )
+
 }
 
 export default ProdukList

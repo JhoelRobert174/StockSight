@@ -1,25 +1,12 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import useDarkMode from "../hooks/useDarkMode"
 
 function Pengaturan() {
   const [namaToko, setNamaToko] = useState("StockSight Store")
-  const [darkMode, setDarkMode] = useState(false)
-
-  useEffect(() => {
-    const storedDarkMode = localStorage.getItem("darkMode") === "true"
-    setDarkMode(storedDarkMode)
-  }, [])
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [darkMode])
+  const [darkMode, setDarkMode] = useDarkMode()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    localStorage.setItem("darkMode", darkMode.toString())
     alert("Pengaturan disimpan!")
   }
 

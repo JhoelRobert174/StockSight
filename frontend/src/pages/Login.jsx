@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { useAuth } from "../context/useAuth"
+import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
+import { Button, Input } from "@/components/ui"
 
 function Login() {
   const [username, setUsername] = useState("")
@@ -20,39 +21,38 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm"
+        className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">
           Login
         </h2>
 
-        <input
+        <Input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <input
+        <Input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mt-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <button
+        <Button
           type="submit"
-          className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          variant="wide"
+          color = "blue"
         >
           Masuk
-        </button>
-        <p className="mt-4 text-center">
-          Belum punya akun? <a href="/register" className="text-blue-600 underline">Daftar di sini</a>
+        </Button>
+        <p className="mt-4 text-center text-black dark:text-gray-400">
+          Belum punya akun? <a href="/register" className="text-blue-600 dark:text-blue-400 underline">Daftar di sini</a>
         </p>
 
       </form>
