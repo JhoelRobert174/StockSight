@@ -2,6 +2,9 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from backend.models.user import User
 from passlib.hash import bcrypt
+from datetime import datetime, timedelta
+from sqlalchemy import func
+import re
 
 def hash_password(password):
     return bcrypt.hash(password)
@@ -44,13 +47,22 @@ def register_user(request):
     if not isinstance(username, str) or not isinstance(password, str):
         return Response(json_body={'error': 'Username dan password harus berupa string'}, status=400)
 
-    username = username.strip()
+    username = username.strip().lower()
     password = password.strip()
+
+    if not re.match(r'^[a-z0-9_]+$', username):
+        return Response(json_body={'error': 'Username hanya boleh huruf kecil, angka, dan underscore'}, status=400)
 
     if not username or not password:
         return Response(json_body={'error': 'Username dan password wajib diisi'}, status=400)
 
-    existing = session.query(User).filter_by(username=username).first()
+    if len(username) < 3 or len(username) > 32:
+        return Response(json_body={'error': 'Username harus 3–32 karakter'}, status=400)
+
+    if len(password) < 6:
+        return Response(json_body={'error': 'Password minimal 6 karakter'}, status=400)
+
+    existing = session.query(User).filter(func.lower(User.username) == username).first()
     if existing:
         return Response(json_body={'error': 'Username sudah digunakan'}, status=400)
 
@@ -59,6 +71,7 @@ def register_user(request):
     session.flush()
 
     return {'message': 'Registrasi berhasil', 'id': user.id}
+
 
 @view_config(route_name='login', renderer='json', request_method='POST')
 def login_user(request):
@@ -71,14 +84,15 @@ def login_user(request):
     if not isinstance(username, str) or not isinstance(password, str):
         return Response(json_body={'error': 'Username dan password harus berupa string'}, status=400)
 
-    username = username.strip()
+    username = username.strip().lower()
     password = password.strip()
 
-    user = session.query(User).filter_by(username=username).first()
+    user = session.query(User).filter(func.lower(User.username) == username).first()
     if not user or not verify_password(password, user.password_hash):
         return Response(json_body={'error': 'Username atau password salah'}, status=401)
 
-    request.session['user_id'] = user.id  # simpan ke session
+    request.session['user_id'] = user.id
+    request.session['expires_at'] = (datetime.utcnow() + timedelta(hours=1)).isoformat()
 
     return {'message': 'Login berhasil', 'user_id': user.id}
 
@@ -104,7 +118,7 @@ def get_me(request):
 def logout_user(request):
     request.session.clear()
     request.session.invalidate()
-    request.session._dirty = False  # ⛔ Mencegah Pyramid commit session baru
+    request.session._dirty = False
 
     response = Response(json_body={'message': 'Logout berhasil'})
     response.delete_cookie('session', path='/')

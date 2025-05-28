@@ -2,6 +2,7 @@ from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.events import NewRequest
+from backend.tweens.auth_tween import auth_tween_factory
 
 def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
@@ -50,6 +51,9 @@ def main(global_config, **settings):
 
         # CORS
         config.add_subscriber(add_cors_headers_response_callback, NewRequest)
+
+        # Protect
+        config.add_tween('backend.tweens.auth_tween.auth_tween_factory')
 
         # Auto-discover views
         config.scan()
