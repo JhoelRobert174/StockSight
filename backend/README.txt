@@ -42,3 +42,17 @@ Getting Started
 - Run your project.
 
     env/bin/pserve development.ini
+
+
+
+## 🔧 Optional Module: MutasiStok
+
+Model `MutasiStok` disiapkan untuk fitur histori stok granular.
+Saat ini tidak digunakan secara aktif karena pencatatan mutasi dilakukan via log_aktivitas.
+
+Jika ingin mengaktifkan:
+- Buka komentar import `mutasi_stok` di `models/__init__.py`
+- Tambahkan kembali endpoint GET /produk/:id/mutasi-riwayat
+- Tambahkan catatan ke UI jika perlu
+
+Gunakan jika sistem inventory berkembang lebih kompleks.

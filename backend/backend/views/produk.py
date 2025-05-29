@@ -5,9 +5,11 @@ from backend.models.produk import Produk
 from backend.models.kategori import Kategori
 from backend.models.harga_produk import HargaProduk
 from backend.utils import log_aksi
+from backend.models.mutasi_stok import MutasiStok
 from sqlalchemy.orm import joinedload, subqueryload
 from sqlalchemy import func
 from ..utils import apply_pagination
+
 
 
 def get_user_id_or_unauthorized(request):
@@ -85,6 +87,10 @@ def produk_by_kategori(request):
 
 @view_config(route_name='produk_mutasi', renderer='json', request_method='POST')
 def mutasi_stok(request):
+    """
+    Attention! Legacy: Endpoint ini dulunya mencatat ke mutasi_stok, tapi sekarang hanya ubah stok langsung.
+    Sama seperti PUT produk, tapi dibedakan untuk pemisahan UX frontend.
+    """
     session = request.dbsession
     try:
         user_id = get_user_id_or_unauthorized(request)
@@ -99,22 +105,46 @@ def mutasi_stok(request):
     data = request.json_body
     aksi = data.get('aksi', '').strip().lower()
     jumlah = data.get('jumlah')
+    harga_baru = data.get('harga')
 
+    # Validasi
     if aksi not in ['masuk', 'keluar']:
         return Response(json_body={'error': 'Aksi harus "masuk" atau "keluar"'}, status=400)
     if not isinstance(jumlah, int) or jumlah <= 0:
         return Response(json_body={'error': 'Jumlah harus bilangan bulat positif'}, status=400)
 
-    if aksi == 'keluar':
-        if produk.stok < jumlah:
-            return Response(json_body={'error': 'Stok tidak mencukupi'}, status=400)
-        produk.stok -= jumlah
-        msg = 'Stok berhasil dikurangi'
-    else:
-        produk.stok += jumlah
-        msg = 'Stok berhasil ditambah'
+    # Mutasi stok
+    if aksi == 'keluar' and produk.stok < jumlah:
+        return Response(json_body={'error': 'Stok tidak mencukupi'}, status=400)
+    produk.stok += jumlah if aksi == 'masuk' else -jumlah
+    log_aksi(session, f"Mutasi Stok: {produk.nama} ({aksi} {jumlah})", user_id)
 
-    return {'message': msg, 'produk_id': produk.id, 'stok_sisa': produk.stok}
+    # Opsional ubah harga
+    if harga_baru is not None:
+        if not isinstance(harga_baru, (int, float)) or harga_baru < 0:
+            return Response(json_body={'error': 'Harga harus angka ≥ 0'}, status=400)
+        if float(produk.harga) != float(harga_baru):
+            harga_lama = float(produk.harga)
+            produk.harga = harga_baru
+            session.add(HargaProduk(produk_id=produk.id, harga=harga_baru))
+            log_aksi(session, f"Perubahan Harga: {produk.nama} dari Rp{harga_lama:,.0f} → Rp{harga_baru:,.0f}", user_id)
+
+    return {
+        'message': f'Stok {"ditambah" if aksi == "masuk" else "dikurangi"}',
+        'produk_id': produk.id,
+        'stok_sisa': produk.stok,
+        'harga_sekarang': float(produk.harga),
+    }
+
+
+@view_config(route_name='produk_mutasi_riwayat', renderer='json', request_method='GET')
+def riwayat_mutasi(request):
+    """
+    Attention! Legacy: Endpoint histori mutasi stok.
+    Saat ini tidak aktif karena model mutasi_stok tidak digunakan.
+    """
+    return Response(json_body={'error': 'Fitur histori mutasi dinonaktifkan'}, status=410)
+
 
 @view_config(route_name='produk_list', renderer='json', request_method='GET')
 def get_all_produk(request):
@@ -244,6 +274,7 @@ def update_produk(request):
         return Response(json_body={'error': 'Produk tidak ditemukan'}, status=404)
 
     data = request.json_body
+    edited = False  # Flag perubahan non-harga
 
     if 'nama' in data:
         nama = str(data['nama']).strip()
@@ -256,30 +287,41 @@ def update_produk(request):
         ).first()
         if existing:
             return Response(json_body={'error': 'Nama produk sudah digunakan'}, status=400)
-        produk.nama = nama
+        if produk.nama != nama:
+            produk.nama = nama
+            edited = True
 
     if 'harga' in data:
         harga = data['harga']
         if not isinstance(harga, (int, float)) or harga < 0:
             return Response(json_body={'error': 'Harga harus angka ≥ 0'}, status=400)
         if produk.harga != harga:
+            harga_lama = produk.harga
             produk.harga = harga
             session.add(HargaProduk(produk_id=produk.id, harga=harga))
+            log_aksi(session, f"Mengubah Harga Produk: {produk.nama} dari {harga_lama} ke {harga}", user_id)
 
     if 'stok' in data:
         stok = data['stok']
         if not isinstance(stok, int) or stok < 0:
             return Response(json_body={'error': 'Stok harus bilangan bulat ≥ 0'}, status=400)
-        produk.stok = stok
+        if produk.stok != stok:
+            produk.stok = stok
+            edited = True
 
     if 'kategori_id' in data:
         kategori = session.query(Kategori).filter_by(id=data['kategori_id'], user_id=user_id).first()
         if not kategori:
             return Response(json_body={'error': 'Kategori tidak ditemukan'}, status=400)
-        produk.kategori_id = kategori.id
+        if produk.kategori_id != kategori.id:
+            produk.kategori_id = kategori.id
+            edited = True
 
-    log_aksi(session, f"Menghubah Produk: {produk.nama}", user_id)
+    if edited:
+        log_aksi(session, f"Mengubah Data Produk: {produk.nama}", user_id)
+
     return {'message': 'Produk berhasil diperbarui'}
+
 
 @view_config(route_name='produk_detail', renderer='json', request_method='DELETE')
 def delete_produk(request):
@@ -313,4 +355,8 @@ def produk_mutasi_options(request):
 
 @view_config(route_name='produk_by_kategori', request_method='OPTIONS', renderer='json')
 def produk_by_kategori_options(request):
+    return Response(status=204)
+
+@view_config(route_name='produk_mutasi_riwayat', request_method='OPTIONS', renderer='json')
+def produk_mutasi_riwayat_options(request):
     return Response(status=204)

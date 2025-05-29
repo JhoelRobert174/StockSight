@@ -9,7 +9,9 @@ from .user import User
 from .produk import Produk
 from .kategori import Kategori
 from .harga_produk import HargaProduk
-from .log_aktivitas import LogAktivitas  # flake8: noqa
+from .log_aktivitas import LogAktivitas
+# from .mutasi_stok import MutasiStok  # Attention! Dinonaktifkan, belum dipakai aktif
+
 
 configure_mappers()
 

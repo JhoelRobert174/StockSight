@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.env.windows": {
+    "DATABASE_URL": "postgresql://dummy_user:loka123@localhost/be174_db"
+  }
+}

@@ -4,6 +4,7 @@ from pyramid.session import SignedCookieSessionFactory
 from pyramid.events import NewRequest
 from backend.tweens.auth_tween import auth_tween_factory
 
+
 def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
         response.headers.update({
@@ -39,7 +40,8 @@ def main(global_config, **settings):
         config.add_route('produk_detail', '/produk/{id}')             # GET
         config.add_route('produk_update', '/produk/{id}')             # PUT
         config.add_route('produk_delete', '/produk/{id}')             # DELETE
-        config.add_route('produk_mutasi', '/produk/{id}/mutasi')      # POST
+        config.add_route('produk_mutasi', '/produk/{id}/mutasi')
+        config.add_route('produk_mutasi_riwayat', '/produk/{id}/mutasi-riwayat')  # GET      # POST
         config.add_route('produk_by_kategori', '/produk/kategori/{kategori_id}')  # GET
 
         # Kategori routes
