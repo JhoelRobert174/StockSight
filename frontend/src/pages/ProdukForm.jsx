@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { API_BASE } from "../constants/config"
-import { Button, Input, Select } from "@/components/ui"
-import { PageWrapper } from "../components/ui"
+import { Button, Input, Select, PageWrapper } from "@/components/ui"
 
 function ProdukForm() {
   const navigate = useNavigate()

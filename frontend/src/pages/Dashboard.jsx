@@ -7,11 +7,10 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar,
 } from "recharts"
 import { FixedSizeList as List } from "react-window"
-import PageWrapper from "../components/ui/PageWrapper"
+import { Button, Input, Select, PageWrapper } from "@/components/ui"
 
 const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1"]
 
-// ✅ Tooltip untuk stok (Bar + Pie)
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
   const { name, value } = payload[0]
@@ -26,7 +25,6 @@ const CustomTooltip = ({ active, payload, label }) => {
   )
 }
 
-// ✅ Tooltip untuk harga produk (Line Chart)
 const HargaTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null
   const { waktu, harga } = payload[0].payload
@@ -148,12 +146,12 @@ function Dashboard() {
             </h2>
             {selectedKategori && (
               <>
-                <input
+                <Input
                   type="text"
                   placeholder="Cari produk..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  variant ="text"
                 />
                 <button
                   onClick={() => setSelectedKategori(null)}
