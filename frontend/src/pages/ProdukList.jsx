@@ -56,14 +56,16 @@ function ProdukList() {
 
   const title = "Daftar Produk"
   const actions = (
-    <Button
-      onClick={() => navigate("/produk/tambah")}
-      color="blue"
-      variant="primaryAction"
-    >
-      + Tambah Produk
-    </Button>
+    <>
+      <Button
+        onClick={() => navigate("/produk/tambah")}
+        color="blue"
+      >
+        + Tambah Produk
+      </Button>
+    </>
   )
+
 
   if (loading) return <div>Loading...</div>
 
@@ -115,7 +117,14 @@ function ProdukList() {
                     <Td >{produk.kategori}</Td>
                     <Td >{produk.stok}</Td>
                     <Td >Rp {produk.harga.toLocaleString()}</Td>
-                    <Td >
+                    <Td>
+                      <Button
+                        onClick={() => navigate(`/produk/${produk.id}/mutasi`)}
+                        color="green"
+                        variant="subtle"
+                      >
+                        Mutasi
+                      </Button>
                       <Button
                         onClick={() => navigate(`/produk/edit/${produk.id}`)}
                         color="yellow"
@@ -131,6 +140,7 @@ function ProdukList() {
                         Hapus
                       </Button>
                     </Td>
+
                   </Tr>
                 ))}
               </Tbody>
@@ -187,12 +197,15 @@ function ProdukList() {
               />
               <Button
                 onClick={() => {
-                  const target = Number(gotoPage)
-                  if (!isNaN(target) && target >= 1 && target <= totalPages) {
+                  if (gotoPage.trim() === "" || isNaN(Number(gotoPage))) return; // validasi eksplisit 
+                  const target = Number(gotoPage);
+                  if (target >= 1 && target <= totalPages) {
                     setPage(target)
+                    window.scrollTo(0, 0)
                   }
                   setGotoPage("")
                 }}
+
                 color="blue"
                 variant="subtle"
               >

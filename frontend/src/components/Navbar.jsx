@@ -1,11 +1,15 @@
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { useSidebar } from "../hooks/useSidebar"
+import { useSettings } from "../context/SettingsContext"
+import { Button } from "@/components/ui"
+
 
 export default function Navbar() {
   const { logout } = useAuth()
   const navigate = useNavigate()
   const { toggle } = useSidebar()
+  const { namaToko } = useSettings()
 
   const handleLogout = async () => {
     await logout()
@@ -21,15 +25,16 @@ export default function Navbar() {
         >
           ☰
         </button>
-        <div className="text-lg font-bold text-gray-800 dark:text-white">StockSight</div>
+        <div className="text-lg font-bold text-gray-800 dark:text-white">{namaToko}</div>
       </div>
 
-      <button
+      <Button
         onClick={handleLogout}
-        className="text-sm text-red-500 hover:text-red-700"
+        color="red"
+        variant="outline"
       >
         Logout
-      </button>
+      </Button>
     </nav>
   )
 }

@@ -2,7 +2,9 @@ export default function PageWrapper({ title, actions, children, centered = false
   return (
     <div
       className={`w-full ${
-        centered ? "min-h-screen flex items-center justify-center px-4" : "max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+        centered
+          ? "min-h-screen flex items-center justify-center px-4 pt-[60px]"
+          : "max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-[60px]"
       }`}
     >
       <div className={centered ? "w-full max-w-sm" : "w-full"}>
