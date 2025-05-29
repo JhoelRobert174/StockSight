@@ -1,5 +1,5 @@
 import { useSettings } from "../context/SettingsContext"
-import { PageWrapper } from "@/components/ui"
+import { PageWrapper, Button } from "@/components/ui"
 
 function Pengaturan() {
   const { rawNamaToko, setRawNamaToko } = useSettings()
@@ -22,12 +22,13 @@ function Pengaturan() {
             className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
           />
         </div>
-        <button
+        <Button
           type="submit"
+          color="blue"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md transition"
         >
           Simpan Pengaturan
-        </button>
+        </Button>
       </form>
     </PageWrapper>
   )

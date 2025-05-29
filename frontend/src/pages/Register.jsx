@@ -15,12 +15,6 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
-            setMessage("Error: Semua field wajib diisi.")
-            return
-        }
-
-
         if (!email.trim() || !username.trim() || !password.trim() || !confirmPassword.trim()) {
             setMessage("Semua field wajib diisi.")
             return

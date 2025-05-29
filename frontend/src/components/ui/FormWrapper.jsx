@@ -10,7 +10,9 @@ export default function FormWrapper({ title, onSubmit, children }) {
             {title}
           </h2>
         )}
-        {children}
+        <div className="space-y-3">
+          {children}
+        </div>
       </form>
     </div>
   )
