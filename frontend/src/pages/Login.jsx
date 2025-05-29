@@ -6,22 +6,40 @@ import { Button, Input, FormWrapper } from "@/components/ui"
 function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [message, setMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!username.trim() || !password.trim()) {
+      setMessage("Username dan password wajib diisi.")
+      return
+    }
+
+    setIsLoading(true)
+    setMessage("")
+
     try {
       await login(username, password)
-      console.log("Login sukses")
       navigate("/dashboard")
     } catch (err) {
-      console.error("Login error:", err.message)
+      setMessage("Login gagal: " + err.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
     <FormWrapper title="Login" onSubmit={handleSubmit}>
+      {message && (
+        <div className="text-red-500 bg-red-100 dark:bg-red-950 px-4 py-2 rounded mb-4">
+          {message}
+        </div>
+      )}
+
       <Input
         variant="dry"
         placeholder="Username"
@@ -41,8 +59,9 @@ function Login() {
         type="submit"
         variant="wide"
         color="blue"
+        disabled={isLoading}
       >
-        Masuk
+        {isLoading ? "Masuk..." : "Masuk"}
       </Button>
 
       <p className="mt-4 text-center text-black dark:text-gray-400">

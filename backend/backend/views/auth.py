@@ -41,20 +41,25 @@ def register_user(request):
     session = request.dbsession
     data = request.json_body
 
-    username = data.get('username')
-    password = data.get('password')
+    username = data.get('username', '').strip().lower()
+    password = data.get('password', '').strip()
+    email = data.get('email', '').strip().lower()
 
-    if not isinstance(username, str) or not isinstance(password, str):
-        return Response(json_body={'error': 'Username dan password harus berupa string'}, status=400)
+    # Validasi dasar
+    if username == password:
+        return Response(json_body={'error': 'Password tidak boleh sama dengan username'}, status=400)
 
-    username = username.strip().lower()
-    password = password.strip()
+    if not all(isinstance(x, str) for x in [username, password, email]):
+        return Response(json_body={'error': 'Semua input harus berupa string'}, status=400)
+
+    if not username or not password or not email:
+        return Response(json_body={'error': 'Semua field wajib diisi'}, status=400)
 
     if not re.match(r'^[a-z0-9_]+$', username):
         return Response(json_body={'error': 'Username hanya boleh huruf kecil, angka, dan underscore'}, status=400)
 
-    if not username or not password:
-        return Response(json_body={'error': 'Username dan password wajib diisi'}, status=400)
+    if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$', email):
+        return Response(json_body={'error': 'Format email tidak valid'}, status=400)
 
     if len(username) < 3 or len(username) > 32:
         return Response(json_body={'error': 'Username harus 3–32 karakter'}, status=400)
@@ -62,11 +67,13 @@ def register_user(request):
     if len(password) < 6:
         return Response(json_body={'error': 'Password minimal 6 karakter'}, status=400)
 
-    existing = session.query(User).filter(func.lower(User.username) == username).first()
-    if existing:
+    if session.query(User).filter(func.lower(User.username) == username).first():
         return Response(json_body={'error': 'Username sudah digunakan'}, status=400)
 
-    user = User(username=username, password_hash=hash_password(password))
+    if session.query(User).filter(func.lower(User.email) == email).first():
+        return Response(json_body={'error': 'Email sudah digunakan'}, status=400)
+
+    user = User(username=username, email=email, password_hash=hash_password(password))
     session.add(user)
     session.flush()
 
