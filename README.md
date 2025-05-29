@@ -1,85 +1,128 @@
 # StockSight – Dashboard Inventaris Produk
 
 ## Deskripsi
-**StockSight** adalah aplikasi web dashboard untuk mencatat dan memantau stok produk berdasarkan kategori.
-Dirancang untuk toko kecil, UKM, atau kebutuhan inventaris pribadi, aplikasi ini menyediakan antarmuka yang
-intuitif, responsif, dan mendukung manajemen data produk dan kategori dengan efisien.
+
+**StockSight** adalah aplikasi web dashboard untuk mencatat dan memantau stok produk berdasarkan kategori. Dirancang untuk toko kecil, UKM, atau kebutuhan inventaris pribadi, aplikasi ini menyediakan antarmuka yang intuitif, responsif, dan mendukung manajemen data produk dan kategori secara efisien.
 
 ---
 
 ## Fitur-Fitur Utama
 
 ### Produk & Kategori
-- CRUD Produk:
-  - Tambah, lihat, edit, hapus produk
-  - Filter dan search nama produk
-  - Sorting berdasarkan nama, stok, kategori, dan harga
-- CRUD Kategori:
-  - Tambah, lihat, edit, hapus kategori
-  - Search dan sorting nama kategori
+
+* **Produk:**
+
+  * Tambah, lihat, edit, hapus produk
+  * Filter & search nama produk
+  * Pagination & lompat halaman
+  * Riwayat harga produk tersimpan otomatis
+* **Kategori:**
+
+  * Tambah, lihat, edit, hapus kategori
+  * Search kategori
+  * Pagination & lompat halaman
+  * Validasi kategori tidak bisa dihapus jika masih digunakan
+
+### Mutasi Stok
+
+* Form mutasi stok (aksi: masuk / keluar)
+* Validasi stok tidak mencukupi untuk keluar
+* Opsional ubah harga saat mutasi
+* Aktivitas tercatat otomatis di log
 
 ### Dashboard Visual
-- Pie chart distribusi stok per kategori
-- Bar chart total stok semua produk
-- Line chart riwayat harga produk
-- Interaktif: klik kategori → filter produk → tampilkan grafik harga
+
+* **Pie chart:** distribusi stok per kategori
+* **Bar chart:** total stok semua produk
+* **Line chart:** riwayat harga produk
+* Interaktif:
+
+  * Klik kategori → tampilkan daftar produk
+  * Klik produk → tampilkan riwayat harga
 
 ### Utilitas & Navigasi
-- Navigasi dinamis (React Router)
-- Sidebar navigasi tetap (Layout)
-- Halaman Pengaturan (nama toko, mode gelap simulasi)
-- Log Aktivitas (dummy interaksi, siap integrasi backend)
-- Konfirmasi aksi (hapus data dengan modal/native confirm)
+
+* Navigasi SPA dengan React Router
+* Sidebar tetap (toggleable untuk mobile)
+* Halaman Pengaturan:
+
+  * Edit nama toko (localStorage)
+  * Mode gelap (Sekarang di Sidebar)&#x20;
+* Log Aktivitas:
+
+  * Aktivitas tercatat dari backend
+  * Paginasi dan lompat halaman
+* Konfirmasi hapus (native confirm)
 
 ### UX & Responsivitas
-- Tailwind CSS utility-first design
-- Komponen responsif, hover effect, shadowed box UI
-- Simulasi dark mode toggle
+
+* Tailwind CSS: utility-first design
+* Komponen responsif & reusable (Button, Input, Table, PageWrapper, dll)
+* Hover effect, rounded corner, soft shadows
+* Dark mode tersedia
 
 ---
 
 ## Teknologi yang Digunakan
 
 ### Backend
-*(belum diimplementasikan pada tahap ini, namun dirancang untuk integrasi dengan):*
-- Python Pyramid
-- PostgreSQL
-- RESTful API
-- Basic Authentication
-- Unit Testing (≥60% coverage target)
+
+* Python + Pyramid
+* PostgreSQL
+* RESTful API
+* Session-based Authentication (SignedCookie)
+* Custom middleware (auth\_tween)
+* Log aktivitas terintegrasi
+* Validasi input backend
 
 ### Frontend
-- React JS (Functional Components, Hooks)
-- React Router DOM (SPA Navigation)
-- Tailwind CSS
-- Axios (rencana integrasi)
-- Virtualized rendering (react-window)
-- State handling with Context API (planned)
+
+* React JS (Hooks & Functional Components)
+* React Router DOM
+* Tailwind CSS
+* Virtualized rendering: react-window
+* Context API:
+
+  * AuthContext
+  * SettingsContext (nama toko)
+  * SidebarContext
 
 ---
 
 ## Struktur Folder
+
 ```
 /src
-├── components/ # Navbar, Sidebar, Layout, Reusable UI
-├── pages/ # Dashboard, Produk, Kategori, Log, Pengaturan
-├── context/ # (untuk global state, akan dikembangkan)
-├── services/ # Axios API wrapper (akan digunakan)
-├── utils/ # Auth helper, constants
+├── components/       # Navbar, Sidebar, Layout, Reusable UI
+├── pages/            # Dashboard, Produk, Kategori, Log, Pengaturan
+├── context/          # Auth, Settings, Sidebar
+├── services/         # (rencana integrasi Axios API wrapper)
+├── utils/            # Constants, helpers
 ├── App.jsx
 ├── main.jsx
 ```
 
-## Instalasi & Setup (Coming Soon)
-Untuk frontend:
+## Instalasi & Setup
+
+### Frontend:
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Author
-Nama: Jhoel Robert Sugiono Hutagalung  
-NIM : 122140174
+### Backend (Python Pyramid):
 
-> Project ini sebelumnya dikembangkan di akun lain (Arkyna), dimirror ke akun resmi (JhoelRobert174) untuk kebutuhan akademik, dapat di check pada Contributors.
+```bash
+pip install -e .
+pserve development.ini
+```
+
+---
+
+## Author
+
+Nama: **Jhoel Robert Sugiono Hutagalung**
+NIM : **122140174**
+
+> Project ini sebelumnya dikembangkan di akun lain (**Arkyna**), dan dimirror ke akun resmi (**JhoelRobert174**) untuk kebutuhan akademik. Silakan lihat bagian *Contributors* pada repositori untuk riwayat kontribusi.
