@@ -1,7 +1,8 @@
 export default function Input({
   type = "text",
-  variant = "default", // "compact", "dry", "subtle", "ghost", "error"
+  variant = "default",
   className = "",
+  expand = false,
   ...props
 }) {
   const dryStyle = "w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -34,7 +35,8 @@ export default function Input({
     chosenStyle = `${base} ${variantStyles[variant] || variantStyles.default}`;
   }
 
-  const finalClass = `${chosenStyle} ${className}`.replace(/\s+/g, ' ').trim();
+  const flexClass = expand ? "flex-1 min-w-0" : "";
+  const finalClass = `${chosenStyle} ${flexClass} ${className}`.replace(/\s+/g, ' ').trim();
 
   return <input type={type} className={finalClass} {...props} />;
 }

@@ -2,10 +2,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-html {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 /* Light mode autofill */
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px #ffffff inset !important;

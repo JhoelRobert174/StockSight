@@ -68,28 +68,30 @@ function KategoriList() {
   }
 
   return (
-    <PageWrapper title={title} actions={actions}>
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <Input
-          type="text"
-          placeholder="Cari kategori..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
-          <span>Tampilkan:</span>
-          <Select
-            value={limit}
-            onChange={(e) => setLimit(Number(e.target.value))}
-            variant="dry"
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={30}>30</option>
-          </Select>
-          <span>entri</span>
-        </div>
-      </div>
+<PageWrapper title={title} actions={actions}>
+  <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+    <Input
+      type="text"
+      placeholder="Cari kategori..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      expand
+    />
+    <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+      <span>Tampilkan:</span>
+      <Select
+        value={limit}
+        onChange={(e) => setLimit(Number(e.target.value))}
+        variant="dry"
+        minWidth="min-w-[80px]"
+      >
+        <option value={5}>5</option>
+        <option value={10}>10</option>
+        <option value={30}>30</option>
+      </Select>
+      <span>entri</span>
+    </div>
+  </div>
 
       {!loading && kategoriList.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400 py-10">

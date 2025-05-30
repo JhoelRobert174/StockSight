@@ -28,11 +28,10 @@ function Pengaturan() {
           />
         </div>
         <Button
-          type="submit"
           color="blue"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md transition"
+          variant="default"
         >
-          Simpan Pengaturan
+          Simpan
         </Button>
       </form>
     </PageWrapper>
