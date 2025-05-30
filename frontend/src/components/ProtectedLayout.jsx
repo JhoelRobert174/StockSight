@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
-import Layout from "./Layout"  // Komponen layout kamu sekarang
+import Layout from "./Layout" 
 
 const ProtectedLayout = ({ children }) => {
   const { user, loading } = useAuth()

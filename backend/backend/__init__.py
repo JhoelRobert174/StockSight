@@ -32,7 +32,10 @@ def main(global_config, **settings):
         config.add_route('register', '/register')
         config.add_route('login', '/login')
         config.add_route('me', '/me')
+        config.add_route('update_store_name', '/me/store-name')
         config.add_route('logout', '/logout')
+        config.add_route('verify_identity', '/verify-identity')
+        config.add_route('reset_password', '/reset-password')
 
         # Produk routes
         config.add_route('produk_list', '/produk')                     # GET

@@ -6,13 +6,15 @@ PUBLIC_PATHS = {
     '/register',
     '/me',
     '/favicon.ico',
+    '/reset-password',
+    '/verify-identity',
 }
+
 
 def auth_tween_factory(handler, registry):
     def auth_tween(request):
         path = request.path_info
 
-        # 🔓 OPTIONS untuk CORS preflight
         if request.method == 'OPTIONS':
             return Response(
                 status=204,
@@ -24,7 +26,7 @@ def auth_tween_factory(handler, registry):
                 }
             )
 
-        # Public path, lanjutkan langsung
+        # Public path
         if any(path == pub or path.startswith(pub + '/') for pub in PUBLIC_PATHS):
             return handler(request)
 

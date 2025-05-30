@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { useSidebar } from "../hooks/useSidebar"
-import { useSettings } from "../context/SettingsContext"
+import { useSettings } from "@/hooks/useSettings"
 import { Button } from "@/components/ui"
 
 

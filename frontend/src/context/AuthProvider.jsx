@@ -7,17 +7,31 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`${API_BASE}/me`, {
-      credentials: "include"
-    })
-      .then((res) => res.ok ? res.json() : null)
-      .then((data) => {
-        setUser(data ?? null)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [])
+    const checkAuth = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/me`, {
+          credentials: "include",
+        })
 
+        if (res.status === 401) {
+          setUser(null)
+        } else if (res.ok) {
+          const data = await res.json()
+          setUser(data)
+        } else {
+          console.error("Gagal verifikasi user:", res.status)
+          setUser(null)
+        }
+      } catch (err) {
+        console.error("Error saat cek auth:", err)
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
 
   const login = async (username, password) => {
     const res = await fetch(`${API_BASE}/login`, {
@@ -42,15 +56,12 @@ export function AuthProvider({ children }) {
       method: "POST",
       credentials: "include"
     })
-    // Reset user
     setUser(null)
-    // Optional: trigger full reload (bypass state bleed)
     window.location.href = "/login"
   }
 
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   )

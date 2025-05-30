@@ -11,7 +11,7 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False) 
     password_hash = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-
+    store_name = Column(String(128), nullable=False, default='StockSight')
     kategoris = relationship("Kategori", back_populates="user", cascade="all, delete-orphan")
     produks = relationship("Produk", back_populates="user", cascade="all, delete-orphan")
 

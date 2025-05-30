@@ -1,12 +1,17 @@
-import { useSettings } from "../context/SettingsContext"
+import { useSettings } from "@/hooks/useSettings"
 import { PageWrapper, Button } from "@/components/ui"
 
 function Pengaturan() {
-  const { rawNamaToko, setRawNamaToko } = useSettings()
+  const { rawNamaToko, setRawNamaToko, saveStoreName } = useSettings()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    alert("Pengaturan disimpan!")
+    try {
+      await saveStoreName(rawNamaToko)
+      alert("Nama toko disimpan!")
+    } catch (err) {
+      alert("Gagal menyimpan nama toko: " + err.message)
+    }
   }
 
   return (

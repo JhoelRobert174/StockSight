@@ -70,6 +70,13 @@ function Login() {
           Daftar di sini
         </a>
       </p>
+      <p className="mt-2 text-center text-black dark:text-gray-400">
+        Lupa password?{" "}
+        <a href="/verify" className="text-blue-600 dark:text-blue-400 underline">
+          Reset di sini
+        </a>
+      </p>
+
     </FormWrapper>
   )
 }

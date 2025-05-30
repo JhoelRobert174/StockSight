@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-import ProtectedRoute from "./components/ProtectedRoute"
 import ProtectedLayout from "./components/ProtectedLayout"
 import Dashboard from "./pages/Dashboard"
 import ProdukList from "./pages/ProdukList"
 import KategoriList from "./pages/KategoriList"
 import ProdukForm from "./pages/ProdukForm"
-import Layout from "./components/Layout"
 import KategoriForm from "./pages/KategoriForm"
 import LogAktivitas from './pages/LogAktivitas'
 import Pengaturan from './pages/Pengaturan'
 import MutasiProdukForm from "./pages/MutasiProdukForm"
+import IdentityVerifyForm from "./pages/IdentityVerifyForm"
+import ResetPasswordForm from "./pages/ResetPasswordForm"
+
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/verify" element={<IdentityVerifyForm />} />
+        <Route path="/reset-password" element={<ResetPasswordForm />} />
 
         <Route
           path="/dashboard"
