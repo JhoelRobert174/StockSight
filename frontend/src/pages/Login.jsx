@@ -1,21 +1,27 @@
 import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
-import { Button, Input, FormWrapper } from "@/components/ui"
+import { Button, Input, FormWrapper, Message } from "@/components/ui"
 
 function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState("error")
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  const showMessage = (text, type = "error") => {
+    setMessage(text)
+    setMessageType(type)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!username.trim() || !password.trim()) {
-      setMessage("Username dan password wajib diisi.")
+      showMessage("Username dan password wajib diisi.")
       return
     }
 
@@ -26,7 +32,7 @@ function Login() {
       await login(username, password)
       navigate("/dashboard")
     } catch (err) {
-      setMessage("Login gagal: " + err.message)
+      showMessage("Login gagal: " + err.message)
     } finally {
       setIsLoading(false)
     }
@@ -34,11 +40,7 @@ function Login() {
 
   return (
     <FormWrapper title="Login" onSubmit={handleSubmit}>
-      {message && (
-        <div className="text-red-500 bg-red-100 dark:bg-red-950 px-4 py-2 rounded mb-4">
-          {message}
-        </div>
-      )}
+      {message && <Message type={messageType}>{message}</Message>}
 
       <Input
         variant="dry"
@@ -76,7 +78,6 @@ function Login() {
           Reset di sini
         </a>
       </p>
-
     </FormWrapper>
   )
 }

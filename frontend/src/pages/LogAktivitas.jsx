@@ -50,7 +50,7 @@ function LogAktivitas() {
 
   return (
     <PageWrapper title={title}>
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+      <div className="flex flex-col justify-end sm:flex-row items-center mb-6 gap-4">
         <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
           <span>Tampilkan:</span>
           <select

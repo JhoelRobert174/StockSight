@@ -1,17 +1,16 @@
-// hooks/useIsDesktop.js
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
-export default function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768)
+export default function useIsDesktop(breakpoint = 768) {
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= breakpoint)
 
   useEffect(() => {
-    const onResize = () => {
-      setIsDesktop(window.innerWidth >= 768)
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= breakpoint)
     }
 
-    window.addEventListener("resize", onResize)
-    return () => window.removeEventListener("resize", onResize)
-  }, [])
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [breakpoint])
 
   return isDesktop
 }

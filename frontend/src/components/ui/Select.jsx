@@ -4,7 +4,7 @@ export default function Select({
   onChange,
   variant = "default",
   className = "",
-  minWidth = "w-full", // default tetap w-full, tapi fleksibel
+  minWidth = "w-full", 
   children,
   ...props
 }) {

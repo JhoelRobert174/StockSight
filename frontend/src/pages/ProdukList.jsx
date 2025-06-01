@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
 import PageWrapper from "../components/ui/PageWrapper"
-import { Button, Input, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
+import { Select, Button, Input, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
 
 function ProdukList() {
   const navigate = useNavigate()
@@ -77,18 +77,20 @@ function ProdukList() {
           placeholder="Cari produk..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          expand
         />
-        <div className="text-sm text-gray-600 dark:text-gray-300">
-          Tampilkan{" "}
-          <select
+        <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+          Tampilkan: {" "}
+          <Select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+            variant="dry"
+            minWidth="min-w-[80px]"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={30}>30</option>
-          </select>{" "}
+          </Select>{" "}
           entri
         </div>
       </div>

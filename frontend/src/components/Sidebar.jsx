@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useSidebar } from "../hooks/useSidebar"
 import { useAuth } from "../hooks/useAuth"
+import useIsDesktop from "../hooks/useIsDesktop"
 import { Button } from "@/components/ui"
 import { useEffect } from "react"
 
@@ -9,15 +10,14 @@ function Sidebar() {
   const { open, close } = useSidebar()
   const { logout } = useAuth()
   const navigate = useNavigate()
+  const isDesktop = useIsDesktop()
 
-  const isDesktop = window.innerWidth >= 768
-
-  // Close sidebar on path change
+  // Close sidebar on route change
   useEffect(() => {
     close()
   }, [location.pathname])
 
-  // Prevent body scroll in mobile
+  // Lock scroll on mobile when sidebar open
   useEffect(() => {
     if (open && !isDesktop) {
       document.body.classList.add("overflow-hidden")
@@ -43,16 +43,17 @@ function Sidebar() {
     }`
 
   return (
-    <aside
-      className={`
-        bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 shadow-md w-64
-        flex flex-col justify-between z-40
-        transition-transform duration-300
-        fixed md:static top-[60px] left-0
-        h-[calc(100vh-60px)] md:h-auto
-        ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
-      `}
-    >
+<aside
+  className={`
+    bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 shadow-md w-64
+    flex flex-col justify-between z-40
+    transition-transform duration-300
+    fixed top-[60px] left-0 h-[calc(100vh-60px)] 
+    ${open ? "translate-x-0" : "-translate-x-full"} 
+    md:translate-x-0 md:fixed
+  `}
+>
+
       <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="px-6 py-4 border-b text-lg font-bold text-gray-800 dark:text-white">
           Navigasi

@@ -12,5 +12,5 @@ class LogAktivitas(Base):
     waktu = Column(DateTime(timezone=True), server_default=func.now())
     aksi = Column(String, nullable=False)
 
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=True)  # ← Baru digunakan di dalam class
-    user = relationship("User")
+    user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'), nullable=True)  # ← Baru digunakan di dalam class
+    user = relationship("User", passive_deletes=True)

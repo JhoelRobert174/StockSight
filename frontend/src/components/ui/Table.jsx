@@ -1,5 +1,3 @@
-// components/ui/Table.jsx
-
 export default function Table({ minWidth = "640", className = "", children, ...props }) {
   const base = `w-full min-w-[${minWidth}px] text-sm text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-800`
   return (

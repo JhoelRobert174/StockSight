@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { Button, Input, FormWrapper } from "@/components/ui"
+import { Button, Input, FormWrapper, Message } from "@/components/ui"
 import { API_BASE } from "../constants/config"
 
 export function ResetPasswordForm() {
@@ -11,41 +11,49 @@ export function ResetPasswordForm() {
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState("error")
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-  if (!username) {
-    navigate("/login")
+    if (!username) {
+      navigate("/login")
+    }
+  }, [username, navigate])
+
+  const showMessage = (text, type = "error") => {
+    setMessage(text)
+    setMessageType(type)
   }
-}, [username, navigate])
 
   const handleReset = async (e) => {
     e.preventDefault()
     if (!newPassword.trim() || !confirmPassword.trim()) {
-      setMessage("Password wajib diisi.")
+      showMessage("Password wajib diisi.")
       return
     }
     if (newPassword !== confirmPassword) {
-      setMessage("Password tidak cocok.")
+      showMessage("Password tidak cocok.")
       return
     }
     if (username === newPassword) {
-      setMessage("Password tidak boleh sama dengan username.")
+      showMessage("Password tidak boleh sama dengan username.")
       return
     }
+
     setIsLoading(true)
     try {
       const res = await fetch(`${API_BASE}/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, new_password: newPassword })
+        body: JSON.stringify({ username, new_password: newPassword }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Gagal reset password")
-      setMessage("Password berhasil direset. Mengarahkan ke login...")
+
+      showMessage("Password berhasil direset. Mengarahkan ke login...", "success")
       setTimeout(() => navigate("/login"), 2000)
     } catch (err) {
-      setMessage("Error: " + err.message)
+      showMessage("Error: " + err.message)
     } finally {
       setIsLoading(false)
     }
@@ -53,9 +61,8 @@ export function ResetPasswordForm() {
 
   return (
     <FormWrapper title="Reset Password" onSubmit={handleReset}>
-      {message && (
-        <div className="mb-4 px-4 py-2 rounded text-red-500 bg-red-100 dark:bg-red-950">{message}</div>
-      )}
+      {message && <Message type={messageType}>{message}</Message>}
+
       <Input
         variant="dry"
         placeholder="Password Baru"

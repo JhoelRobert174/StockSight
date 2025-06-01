@@ -5,7 +5,6 @@ from backend.models.produk import Produk
 from backend.models.kategori import Kategori
 from backend.models.harga_produk import HargaProduk
 from backend.utils import log_aksi
-from backend.models.mutasi_stok import MutasiStok
 from sqlalchemy.orm import joinedload, subqueryload
 from sqlalchemy import func
 from ..utils import apply_pagination

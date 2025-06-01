@@ -39,6 +39,28 @@ def register_dummy(request):
 def update_store_name_options_handler(request):
     return Response(status=204)
 
+@view_config(route_name='delete_account', renderer='json', request_method='DELETE')
+def delete_account(request):
+    session = request.dbsession
+    user_id = request.session.get('user_id')
+
+    if not user_id:
+        return Response(json_body={'error': 'Belum login'}, status=401)
+
+    user = session.get(User, user_id)
+    if not user:
+        return Response(json_body={'error': 'User tidak ditemukan'}, status=404)
+
+    session.delete(user)
+    session.flush()
+    
+    request.session.invalidate()
+
+    return {'message': 'Akun berhasil dihapus'}
+
+@view_config(route_name='delete_account_options', renderer='json')
+def delete_account_options(request):
+    return Response(status=204)
 
 @view_config(route_name='register', renderer='json', request_method='POST')
 def register_user(request):
@@ -175,6 +197,7 @@ def reset_password(request):
 
 @view_config(route_name='update_store_name', renderer='json', request_method='PUT')
 def update_store_name(request):
+    print("🔥 update_store_name CALLED")
     session = request.dbsession
     user_id = request.session.get('user_id')
 
@@ -193,6 +216,8 @@ def update_store_name(request):
 
     user.store_name = store_name
     session.add(user)
+
+    session.flush()
 
     return {'message': 'Nama toko diperbarui'}
 

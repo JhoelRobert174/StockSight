@@ -1,23 +1,15 @@
-// File: PageWrapper.jsx (Relevant part for non-centered pages)
-
 export default function PageWrapper({ title, actions, children, centered = false }) {
   return (
     <div
-      className={`w-full ${ // This outer div takes full width of its container (main)
+      className={`w-full ${
         centered
-          ? "min-h-screen flex items-center justify-center px-4 pt-[60px]" // Centered version example
-          // For default pages:
-          // - px-4 sm:px-6 lg:px-8: Horizontal padding
-          // - py-6: Vertical padding
-          // - pt-[60px]: Additional top padding to offset the fixed Navbar's height
-          // - xl:max-w-screen-xl: Max width for the content area on large screens
-          // - mx-auto: Centers the content block when it's narrower than its container (main)
-          : "px-4 sm:px-6 lg:px-8 py-6 pt-[60px] xl:max-w-screen-xl mx-auto"
+          ? "min-h-screen flex items-center justify-center px-4 pt-[60px]"
+          : "px-4 sm:px-6 lg:px-8 pt-[60px] pb-6 xl:max-w-screen-xl mx-auto"
       }`}
     >
-      <div className={centered ? "w-full max-w-sm" : "w-full"}> {/* Inner div, takes full width of parent */}
+      <div className={centered ? "w-full max-w-sm" : "w-full -mt-4"}>
         {title && (
-          <div className="flex flex-col sm:flex-row sm:flex-wrap justify-between items-center mb-6 gap-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap justify-between items-center mb-4 gap-4">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
               {title}
             </h1>

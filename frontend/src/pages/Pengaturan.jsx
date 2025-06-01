@@ -14,6 +14,19 @@ function Pengaturan() {
     }
   }
 
+const { deleteAccount } = useSettings()
+
+const handleDeleteAccount = async () => {
+  const confirm = window.confirm("Yakin ingin menghapus akun secara permanen?")
+  if (!confirm) return
+
+  try {
+    await deleteAccount()
+  } catch (err) {
+    alert("Gagal menghapus akun: " + err.message)
+  }
+}
+
   return (
     <PageWrapper title="Pengaturan">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -30,10 +43,25 @@ function Pengaturan() {
         <Button
           color="blue"
           variant="default"
+          type="submit"
         >
           Simpan
         </Button>
       </form>
+      <div className="mt-8 border-t pt-6 border-red-300">
+        <h2 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2">Hapus Akun</h2>
+        <p className="text-sm text-red-600 dark:text-red-400 mb-3">
+          Tindakan ini akan menghapus seluruh data akun Anda secara permanen.
+        </p>
+        <Button
+          color="red"
+          variant="outline"
+          onClick={handleDeleteAccount}
+        >
+          Hapus Akun
+        </Button>
+      </div>
+
     </PageWrapper>
   )
 }

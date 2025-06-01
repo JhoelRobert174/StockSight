@@ -33,22 +33,19 @@ def main(global_config, **settings):
         config.add_route('login', '/login')
         config.add_route('me', '/me')
         config.add_route('update_store_name', '/me/store-name')
-        
         config.add_route('logout', '/logout')
         config.add_route('verify_identity', '/verify-identity')
         config.add_route('reset_password', '/reset-password')
 
         # Produk routes
-        config.add_route('produk_list', '/produk')
-        config.add_route('produk_create', '/produk')
-        config.add_route('produk_mutasi_riwayat', '/produk/{id}/mutasi-riwayat')  # 🔼 Dipindah ke atas
+        config.add_route('produk_list', '/produk')                     # GET
+        config.add_route('produk_create', '/produk')                  # POST
+        config.add_route('produk_detail', '/produk/{id}')             # GET
+        config.add_route('produk_update', '/produk/{id}')             # PUT
+        config.add_route('produk_delete', '/produk/{id}')             # DELETE
         config.add_route('produk_mutasi', '/produk/{id}/mutasi')
-        config.add_route('produk_detail', '/produk/{id}')
-        config.add_route('produk_update', '/produk/{id}')
-        config.add_route('produk_delete', '/produk/{id}')
-        config.add_route('produk_by_kategori', '/produk/kategori/{kategori_id}')
-        config.add_route('delete_account', '/me/delete-account')
-        config.add_route('delete_account_options', '/me/delete-account', request_method='OPTIONS')
+        config.add_route('produk_mutasi_riwayat', '/produk/{id}/mutasi-riwayat')  # GET      # POST
+        config.add_route('produk_by_kategori', '/produk/kategori/{kategori_id}')  # GET
 
         # Kategori routes
         config.add_route('kategori_list', '/kategori')                # GET, POST

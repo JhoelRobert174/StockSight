@@ -12,7 +12,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <button
           onClick={toggle}
-          className="sm:hidden text-2xl text-gray-800 dark:text-white"
+          className="md:hidden text-2xl text-gray-800 dark:text-white"
         >
           ☰
         </button>

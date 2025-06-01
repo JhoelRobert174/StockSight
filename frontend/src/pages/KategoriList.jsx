@@ -69,7 +69,7 @@ function KategoriList() {
 
   return (
 <PageWrapper title={title} actions={actions}>
-  <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+  <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
     <Input
       type="text"
       placeholder="Cari kategori..."
