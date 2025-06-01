@@ -125,13 +125,13 @@ function ProdukList() {
                     <Td >{produk.kategori}</Td>
                     <Td >{produk.stok}</Td>
                     <Td >Rp {produk.harga.toLocaleString()}</Td>
-                    <Td>
+                    <Td className="flex gap-2">
                       <Button onClick={() => navigate(`/produk/${produk.id}/mutasi`)} color="green" variant="subtle">
                         <FiRepeat className="mr-1" />
                         Mutasi
                       </Button>
                       <Button onClick={() => navigate(`/produk/edit/${produk.id}`)} color="yellow" variant="subtle">
-                        <FiEdit2 className="mr-1" size={16} />
+                        <FiEdit2 className="mr-1" />
                         Edit
                       </Button>
                       <Button onClick={() => confirmDelete(produk.id, produk.nama)} color="red" variant="subtle">
