@@ -1,7 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { API_BASE } from "../constants/config"
-import { Button, Input, Select, PageWrapper } from "@/components/ui"
+import { PanelTitle, Button, Input, Select, PageWrapper, Loading } from "@/components/ui"
+import {
+  FiPlus,
+  FiEdit2,
+  FiX,
+} from "react-icons/fi"
 
 function ProdukForm() {
   const navigate = useNavigate()
@@ -82,76 +87,81 @@ function ProdukForm() {
     }
   }
 
-  if (isEdit && loading) return <div>Loading...</div>
+  if (loading) return <Loading text="Mengambil data produk..." />
+  
+  return (
+    <PageWrapper
+      title={
+        <PanelTitle icon={isEdit ? FiEdit2 : FiPlus}>
+          {isEdit ? "Edit Produk" : "Tambah Produk"}
+        </PanelTitle>
+      }
+    >
 
-return (
-  <PageWrapper title={isEdit ? "Edit Produk" : "Tambah Produk"}>
-    {error && (
-      <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
-        {error}
-      </div>
-    )}
+      {error && (
+        <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
+          {error}
+        </div>
+      )}
 
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        name="nama"
-        value={form.nama}
-        onChange={handleChange}
-        placeholder="Nama Produk"
-        variant="dry"
-        type="text"
-      />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          name="nama"
+          value={form.nama}
+          onChange={handleChange}
+          placeholder="Nama Produk"
+          variant="dry"
+          type="text"
+        />
 
-      <Select
-        name="kategori_id"
-        value={form.kategori_id}
-        onChange={handleChange}
-        variant="dry"
-      >
-        <option value="">-- Pilih Kategori --</option>
-        {kategoriList.map(k => (
-          <option key={k.id} value={k.id}>{k.nama}</option>
-        ))}
-      </Select>
-
-      <Input
-        name="stok"
-        type="number"
-        value={form.stok}
-        onChange={handleChange}
-        placeholder="Stok"
-        variant="dry"
-      />
-
-      <Input
-        name="harga"
-        type="number"
-        value={form.harga}
-        onChange={handleChange}
-        placeholder="Harga"
-        variant="dry"
-      />
-
-      <div className="flex justify-between">
-        <Button
-          type="submit"
-          color="purblue"
-          variant="default"
+        <Select
+          name="kategori_id"
+          value={form.kategori_id}
+          onChange={handleChange}
+          variant="dry"
         >
-          Simpan
-        </Button>
-        <Button
-          type="button"
-          onClick={() => navigate("/produk")}
-          color="red"
-          variant="outline"
-        >
-          Batal
-        </Button>
-      </div>
-    </form>
-  </PageWrapper>
-)
+          <option value="">-- Pilih Kategori --</option>
+          {kategoriList.map(k => (
+            <option key={k.id} value={k.id}>{k.nama}</option>
+          ))}
+        </Select>
+
+        <Input
+          name="stok"
+          type="number"
+          value={form.stok}
+          onChange={handleChange}
+          placeholder="Stok"
+          variant="dry"
+        />
+
+        <Input
+          name="harga"
+          type="number"
+          value={form.harga}
+          onChange={handleChange}
+          placeholder="Harga"
+          variant="dry"
+        />
+
+        <div className="flex justify-between">
+          <Button type="submit"
+            color="purblue"
+            variant="default">
+            <FiPlus className="mr-2" />
+            Simpan
+          </Button>
+          <Button type="button" onClick={() => navigate("/produk")}
+            color="red"
+            variant="outline">
+            <FiX className="mr-2" />
+            Batal
+          </Button>
+        </div>
+
+      </form>
+    </PageWrapper>
+  )
 }
 
 export default ProdukForm

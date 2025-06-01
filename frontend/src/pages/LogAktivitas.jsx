@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { API_BASE } from "../constants/config"
 import PageWrapper from "../components/ui/PageWrapper"
-import { Button, Input, Select, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
+import { Button, Input, Select, Table, Thead, Tbody, Tr, Th, Td, PanelTitle, Loading } from "@/components/ui"
+import { FiClock } from "react-icons/fi"
 
 function LogAktivitas() {
   const [logs, setLogs] = useState([])
@@ -46,7 +47,11 @@ function LogAktivitas() {
     }
   }
 
-  const title = "Log Aktivitas"
+  const title = (
+    <PanelTitle icon={FiClock}>
+      Log Aktivitas
+    </PanelTitle>
+  )
 
   return (
     <PageWrapper title={title}>
@@ -71,7 +76,7 @@ function LogAktivitas() {
       </div>
 
       {loading && logs.length === 0 ? (
-        <div className="text-center py-10 text-gray-500 dark:text-gray-400">Memuat log...</div>
+        <Loading text="Memuat log aktivitas..." />
       ) : error ? (
         <div className="text-center py-10 text-red-500 dark:text-red-400">❌ {error}</div>
       ) : logs.length === 0 ? (

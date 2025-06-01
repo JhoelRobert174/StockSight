@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
-import PageWrapper from "../components/ui/PageWrapper"
-import { Select, Button, Input, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
+import { Loading, PageWrapper, Select, Button, Input, Table, Thead, Tbody, Tr, Th, Td, PanelTitle } from "@/components/ui"
+import {
+  FiPackage,
+  FiPlus,
+  FiEdit2,
+  FiTrash2,
+  FiRepeat,
+} from "react-icons/fi"
+
 
 function ProdukList() {
   const navigate = useNavigate()
@@ -54,20 +61,19 @@ function ProdukList() {
     }
   }
 
-  const title = "Daftar Produk"
+  const title = <PanelTitle icon={FiPackage}>Daftar Produk</PanelTitle>
   const actions = (
     <>
-      <Button
-        onClick={() => navigate("/produk/tambah")}
-        color="purblue"
-      >
-        + Tambah Produk
+      <Button onClick={() => navigate("/produk/tambah")} color="purblue">
+        <FiPlus className="mr-2" />
+        Tambah Produk
       </Button>
+
     </>
   )
 
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loading text="Mengambil data produk..." />
 
   return (
     <PageWrapper title={title} actions={actions}>
@@ -120,27 +126,19 @@ function ProdukList() {
                     <Td >{produk.stok}</Td>
                     <Td >Rp {produk.harga.toLocaleString()}</Td>
                     <Td>
-                      <Button
-                        onClick={() => navigate(`/produk/${produk.id}/mutasi`)}
-                        color="green"
-                        variant="subtle"
-                      >
+                      <Button onClick={() => navigate(`/produk/${produk.id}/mutasi`)} color="green" variant="subtle">
+                        <FiRepeat className="mr-1" />
                         Mutasi
                       </Button>
-                      <Button
-                        onClick={() => navigate(`/produk/edit/${produk.id}`)}
-                        color="yellow"
-                        variant="subtle"
-                      >
+                      <Button onClick={() => navigate(`/produk/edit/${produk.id}`)} color="yellow" variant="subtle">
+                        <FiEdit2 className="mr-1" size={16} />
                         Edit
                       </Button>
-                      <Button
-                        onClick={() => confirmDelete(produk.id, produk.nama)}
-                        color="red"
-                        variant="subtle"
-                      >
+                      <Button onClick={() => confirmDelete(produk.id, produk.nama)} color="red" variant="subtle">
+                        <FiTrash2 className="mr-1" />
                         Hapus
                       </Button>
+
                     </Td>
 
                   </Tr>

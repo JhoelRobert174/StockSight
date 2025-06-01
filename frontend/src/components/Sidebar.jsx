@@ -4,14 +4,7 @@ import { useAuth } from "../hooks/useAuth"
 import useIsDesktop from "../hooks/useIsDesktop"
 import { Button } from "@/components/ui"
 import { useEffect } from "react"
-import {
-  FiGrid,
-  FiBox,
-  FiLayers,
-  FiActivity,
-  FiSettings,
-  FiLogOut,
-} from "react-icons/fi"
+import { FiGrid, FiBox, FiLayers, FiClock, FiSettings, FiLogOut} from "react-icons/fi"
 
 function Sidebar() {
   const location = useLocation()
@@ -74,7 +67,7 @@ function Sidebar() {
             <FiLayers size={18} /> Kategori
           </Link>
           <Link to="/log" onClick={close} className={linkClass("/log")}>
-            <FiActivity size={18} /> Log Aktivitas
+            <FiClock size={18} /> Log Aktivitas
           </Link>
           <Link to="/pengaturan" onClick={close} className={linkClass("/pengaturan")}>
             <FiSettings size={18} /> Pengaturan

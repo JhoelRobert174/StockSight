@@ -1,5 +1,6 @@
 import { useSettings } from "@/hooks/useSettings"
-import { PageWrapper, Button, Input } from "@/components/ui"
+import { PageWrapper, Button, Input, PanelTitle } from "@/components/ui"
+import { FiSave, FiTrash2, FiSettings } from "react-icons/fi"
 
 function Pengaturan() {
   const { rawNamaToko, setRawNamaToko, saveStoreName } = useSettings()
@@ -14,21 +15,27 @@ function Pengaturan() {
     }
   }
 
-const { deleteAccount } = useSettings()
+  const { deleteAccount } = useSettings()
 
-const handleDeleteAccount = async () => {
-  const confirm = window.confirm("Yakin ingin menghapus akun secara permanen?")
-  if (!confirm) return
+  const handleDeleteAccount = async () => {
+    const confirm = window.confirm("Yakin ingin menghapus akun secara permanen?")
+    if (!confirm) return
 
-  try {
-    await deleteAccount()
-  } catch (err) {
-    alert("Gagal menghapus akun: " + err.message)
+    try {
+      await deleteAccount()
+    } catch (err) {
+      alert("Gagal menghapus akun: " + err.message)
+    }
   }
-}
 
   return (
-    <PageWrapper title="Pengaturan">
+    <PageWrapper
+      title={
+        <PanelTitle icon={FiSettings}>
+          Pengaturan
+        </PanelTitle>
+      }
+    >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -45,8 +52,10 @@ const handleDeleteAccount = async () => {
           variant="default"
           type="submit"
         >
+          <FiSave className="mr-2" />
           Simpan
         </Button>
+
       </form>
       <div className="mt-8 border-t pt-6 border-red-300">
         <h2 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2">Hapus Akun</h2>
@@ -58,8 +67,10 @@ const handleDeleteAccount = async () => {
           variant="outline"
           onClick={handleDeleteAccount}
         >
+          <FiTrash2 className="mr-2" />
           Hapus Akun
         </Button>
+
       </div>
 
     </PageWrapper>

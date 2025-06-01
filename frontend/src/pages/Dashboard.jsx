@@ -7,7 +7,8 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar,
 } from "recharts"
 import { FixedSizeList as List } from "react-window"
-import { Button, Input, Select, PageWrapper } from "@/components/ui"
+import { PanelTitle, Input, Select, PageWrapper } from "@/components/ui"
+import { FiBarChart2, FiPieChart, FiList, FiTrendingUp, FiGrid } from "react-icons/fi"
 
 const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1"]
 
@@ -82,20 +83,18 @@ function Dashboard() {
 
   const produkFiltered = selectedKategori
     ? produkList.filter(
-        (p) =>
-          p.kategori === selectedKategori &&
-          p.nama.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      (p) =>
+        p.kategori === selectedKategori &&
+        p.nama.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : []
 
   return (
-    <PageWrapper title="Dashboard">
+    <PageWrapper title={<PanelTitle icon={FiGrid}>Dashboard</PanelTitle>}>
       <div className="space-y-8">
         {/* Chart Total Stok */}
         <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
-            Total Stok Semua Produk
-          </h2>
+          <PanelTitle icon={FiBarChart2}>Total Stok Semua Produk</PanelTitle>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={produkList}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -111,9 +110,7 @@ function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Pie Chart */}
           <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
-              Distribusi Stok per Kategori
-            </h2>
+            <PanelTitle icon={FiPieChart}>Distribusi Stok per Kategori</PanelTitle>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -141,9 +138,10 @@ function Dashboard() {
 
           {/* Produk List by Kategori */}
           <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
+            <PanelTitle icon={FiList}>
               {selectedKategori ? `Produk: ${selectedKategori}` : "Pilih kategori"}
-            </h2>
+            </PanelTitle>
+
             {selectedKategori && (
               <>
                 <Input
@@ -151,7 +149,7 @@ function Dashboard() {
                   placeholder="Cari produk..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  variant ="text"
+                  variant="text"
                 />
                 <button
                   onClick={() => setSelectedKategori(null)}
@@ -175,7 +173,7 @@ function Dashboard() {
                     onClick={() => setSelectedProduk(produkFiltered[index])}
                     className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 border-b text-gray-800 dark:text-white"
                   >
-                    {produkFiltered[index].nama} —{" "}
+                    {produkFiltered[index].nama} — {" "}
                     <span className="text-blue-600 dark:text-[#BB86FC]">
                       {produkFiltered[index].stok.toLocaleString()} stok
                     </span>
@@ -187,9 +185,10 @@ function Dashboard() {
 
           {/* Line Chart Harga */}
           <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
+            <PanelTitle icon={FiTrendingUp}>
               {selectedProduk ? `Harga: ${selectedProduk.nama}` : "Pilih produk"}
-            </h2>
+            </PanelTitle>
+
             {selectedProduk ? (
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart

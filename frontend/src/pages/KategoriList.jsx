@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
-import { Button, Input, PageWrapper, Select, Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui"
+import { Button, Input, PageWrapper, Select, Table, Thead, Tbody, Tr, Th, Td, PanelTitle, Loading } from "@/components/ui"
+import { FiLayers, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi"
 
 function KategoriList() {
   const navigate = useNavigate()
@@ -53,45 +54,44 @@ function KategoriList() {
     }
   }
 
-  const title = "Daftar Kategori"
+  const title = <PanelTitle icon={FiLayers}>Daftar Kategori</PanelTitle>
   const actions = (
-    <Button
-      onClick={() => navigate("/kategori/tambah")}
-      color="purblue"
-    >
-      + Tambah Kategori
+    <Button onClick={() => navigate("/kategori/tambah")} color="purblue">
+      <FiPlus className="mr-2" />
+      Tambah Kategori
     </Button>
   )
 
   if (loading && kategoriList.length === 0) {
-    return <div className="text-center py-10">Loading...</div>
+    return <Loading text="Mengambil data kategori..." />
   }
 
+
   return (
-<PageWrapper title={title} actions={actions}>
-  <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
-    <Input
-      type="text"
-      placeholder="Cari kategori..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      expand
-    />
-    <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
-      <span>Tampilkan:</span>
-      <Select
-        value={limit}
-        onChange={(e) => setLimit(Number(e.target.value))}
-        variant="dry"
-        minWidth="min-w-[50px]"
-      >
-        <option value={5}>5</option>
-        <option value={10}>10</option>
-        <option value={30}>30</option>
-      </Select>
-      <span>entri</span>
-    </div>
-  </div>
+    <PageWrapper title={title} actions={actions}>
+      <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
+        <Input
+          type="text"
+          placeholder="Cari kategori..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          expand
+        />
+        <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+          <span>Tampilkan:</span>
+          <Select
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
+            variant="dry"
+            minWidth="min-w-[50px]"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={30}>30</option>
+          </Select>
+          <span>entri</span>
+        </div>
+      </div>
 
       {!loading && kategoriList.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400 py-10">
@@ -112,12 +112,13 @@ function KategoriList() {
                   <Tr key={kat.id}>
                     <Td>{kat.nama}</Td>
                     <Td>
-                      <div>
+                      <div className="flex gap-2">
                         <Button
                           onClick={() => navigate(`/kategori/edit/${kat.id}`)}
                           color="yellow"
                           variant="subtle"
                         >
+                          <FiEdit2 className="mr-1" size={16} />
                           Edit
                         </Button>
                         <Button
@@ -125,8 +126,10 @@ function KategoriList() {
                           color="red"
                           variant="subtle"
                         >
+                          <FiTrash2 className="mr-1" />
                           Hapus
                         </Button>
+
                       </div>
                     </Td>
                   </Tr>

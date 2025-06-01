@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { API_BASE } from "../constants/config"
-import { Button, Input, PageWrapper } from "@/components/ui"
+import { Button, Input, PageWrapper, Loading, PanelTitle } from "@/components/ui"
+import { FiTag, FiPlus, FiX } from "react-icons/fi"
 
 function KategoriForm() {
   const { id } = useParams()
@@ -12,22 +13,16 @@ function KategoriForm() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (isEdit) {
-      setLoading(true)
-      fetch(`${API_BASE}/kategori/${id}`, { credentials: "include" })
-        .then(res => {
-          if (!res.ok) return Promise.reject(`Gagal ambil data kategori (${res.status})`)
-          return res.json()
-        })
-        .then(data => {
-          setNama(data.nama)
-        })
-        .catch(err => {
-          console.error(err)
-          setError(typeof err === 'string' ? err : (err.message || "Terjadi kesalahan saat mengambil data."))
-        })
-        .finally(() => setLoading(false))
-    }
+    if (!isEdit) return
+    setLoading(true)
+    fetch(`${API_BASE}/kategori/${id}`, { credentials: "include" })
+      .then(res => res.ok ? res.json() : Promise.reject(`Gagal ambil data kategori (${res.status})`))
+      .then(data => setNama(data.nama))
+      .catch(err => {
+        console.error(err)
+        setError(typeof err === 'string' ? err : (err.message || "Terjadi kesalahan saat mengambil data."))
+      })
+      .finally(() => setLoading(false))
   }, [id, isEdit])
 
   const handleSubmit = async (e) => {
@@ -60,34 +55,43 @@ function KategoriForm() {
 
   if (isEdit && loading && !nama) {
     return (
-      <PageWrapper title="Edit Kategori" centered>
-        <div className="text-center text-gray-800 dark:text-gray-100">Loading...</div>
+      <PageWrapper
+        title={<PanelTitle icon={FiTag}>Edit Kategori</PanelTitle>}
+        centered
+      >
+        <Loading text="Mengambil data kategori..." />
       </PageWrapper>
     )
   }
 
   return (
-    <PageWrapper title={isEdit ? "Edit Kategori" : "Tambah Kategori"}>
+    <PageWrapper
+      title={
+        <PanelTitle icon={FiTag}>
+          {isEdit ? "Edit Kategori" : "Tambah Kategori"}
+        </PanelTitle>
+      }
+    >
       {error && (
         <div className="mb-4 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
           {error}
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Input
-            id="nama"
-            name="nama"
-            value={nama}
-            onChange={(e) => setNama(e.target.value)}
-            placeholder="Nama Kategori"
-            type="text"
-            disabled={loading && !isEdit}
-          />
-        </div>
+        <Input
+          id="nama"
+          name="nama"
+          value={nama}
+          onChange={(e) => setNama(e.target.value)}
+          placeholder="Nama Kategori"
+          type="text"
+          disabled={loading && !isEdit}
+        />
         <div className="flex justify-between">
           <Button type="submit" color="purblue" disabled={loading}>
+            <FiPlus className="mr-2" />
             {loading ? (isEdit ? 'Menyimpan...' : 'Menambahkan...') : 'Simpan'}
+
           </Button>
           <Button
             type="button"
@@ -96,6 +100,7 @@ function KategoriForm() {
             variant="outline"
             disabled={loading}
           >
+            <FiX className="mr-2" />
             Batal
           </Button>
         </div>

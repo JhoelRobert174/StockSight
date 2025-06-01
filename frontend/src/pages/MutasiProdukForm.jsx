@@ -1,7 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { API_BASE } from "../constants/config"
-import { Button, Input, PageWrapper } from "@/components/ui"
+import { Select, Button, Input, PageWrapper, PanelTitle, Loading } from "@/components/ui"
+import { FiSave, FiX, FiRepeat } from "react-icons/fi"
+
 
 function MutasiProdukForm() {
   const navigate = useNavigate()
@@ -65,10 +67,10 @@ function MutasiProdukForm() {
     }
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loading text="Memuat data produk..." />
 
   return (
-    <PageWrapper title={`Mutasi Produk: ${produkNama}`}>
+    <PageWrapper title={<PanelTitle icon={FiRepeat}>Mutasi Produk: {produkNama}</PanelTitle>}>
       {error && (
         <div className="mb-4 text-red-600 bg-red-100 dark:bg-red-950 px-4 py-2 rounded">
           {error}
@@ -77,18 +79,17 @@ function MutasiProdukForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
 
-        {/* Aksi: masuk / keluar */}
-        <select
+
+        <Select
           name="aksi"
           value={form.aksi}
           onChange={handleChange}
-          className="w-full border border-gray-300 dark:border-gray-600 rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+          variant="dry"
         >
           <option value="masuk">Tambah Stok</option>
           <option value="keluar">Kurangi Stok</option>
-        </select>
+        </Select>
 
-        {/* Jumlah Mutasi */}
         <Input
           name="jumlah"
           type="number"
@@ -99,7 +100,6 @@ function MutasiProdukForm() {
           required
         />
 
-        {/* Harga opsional */}
         <Input
           name="harga"
           type="number"
@@ -110,13 +110,16 @@ function MutasiProdukForm() {
         />
 
         <div className="flex justify-between">
-          <Button type="submit" color="blue" variant="default">
+          <Button type="submit" color="purblue" variant="default">
+            <FiSave className="mr-2" />
             Simpan Mutasi
           </Button>
           <Button type="button" onClick={() => navigate("/produk")} color="red" variant="outline">
+            <FiX className="mr-2" />
             Batal
           </Button>
         </div>
+
       </form>
     </PageWrapper>
   )
