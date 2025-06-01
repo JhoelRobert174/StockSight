@@ -2,127 +2,174 @@
 
 ## Deskripsi
 
-**StockSight** adalah aplikasi web dashboard untuk mencatat dan memantau stok produk berdasarkan kategori. Dirancang untuk toko kecil, UKM, atau kebutuhan inventaris pribadi, aplikasi ini menyediakan antarmuka yang intuitif, responsif, dan mendukung manajemen data produk dan kategori secara efisien.
+**StockSight** adalah aplikasi web dashboard yang dirancang untuk membantu pencatatan dan pemantauan stok produk berdasarkan kategori. Cocok untuk toko kecil, UMKM, hingga kebutuhan pribadi. Dengan tampilan responsif dan fitur visualisasi interaktif, StockSight memudahkan pengguna dalam mengelola inventaris secara efisien.
 
 ---
 
-## Fitur-Fitur Utama
+## ✅ Fitur-Fitur Utama
 
-### Produk & Kategori
+### 📆 Produk & Kategori
 
-* **Produk:**
+* **Produk**
 
   * Tambah, lihat, edit, hapus produk
-  * Filter & search nama produk
-  * Pagination & lompat halaman
-  * Riwayat harga produk tersimpan otomatis
-* **Kategori:**
+  * Pencarian nama produk & filter berdasarkan kategori
+  * Pagination & navigasi antar halaman
+  * Riwayat harga tercatat otomatis saat mutasi
 
-  * Tambah, lihat, edit, hapus kategori
-  * Search kategori
-  * Pagination & lompat halaman
-  * Validasi kategori tidak bisa dihapus jika masih digunakan
+* **Kategori**
 
-### Mutasi Stok
+  * CRUD kategori
+  * Validasi penghapusan: tidak bisa menghapus kategori yang masih digunakan
+  * Search dan pagination
 
-* Form mutasi stok (aksi: masuk / keluar)
-* Validasi stok tidak mencukupi untuk keluar
-* Opsional ubah harga saat mutasi
-* Aktivitas tercatat otomatis di log
+### 🔁 Mutasi Stok
 
-### Dashboard Visual
+* Tambah mutasi stok (aksi: masuk / keluar)
+* Validasi stok keluar agar tidak melebihi stok tersedia
+* Opsi ubah harga saat mutasi
+* Tercatat otomatis di log aktivitas
 
-* **Pie chart:** distribusi stok per kategori
-* **Bar chart:** total stok semua produk
-* **Line chart:** riwayat harga produk
+### 📊 Dashboard Visual Interaktif
+
+* **Pie chart**: distribusi stok per kategori
+* **Bar chart**: total stok per produk
+* **Line chart**: histori harga produk
 * Interaktif:
 
-  * Klik kategori → tampilkan daftar produk
-  * Klik produk → tampilkan riwayat harga
+  * Klik kategori → tampilkan produk terkait
+  * Klik produk → tampilkan grafik harga
 
-### Utilitas & Navigasi
+### ⚙️ Utilitas & Navigasi
 
-* Navigasi SPA dengan React Router
-* Sidebar tetap (toggleable untuk mobile)
+* Navigasi berbasis SPA dengan React Router DOM
+* Sidebar responsif (auto-collapse di mobile)
 * Halaman Pengaturan:
 
-  * Edit nama toko (localStorage)
-  * Mode gelap (Sekarang di Sidebar)&#x20;
+  * Ubah nama toko
+  * Dark mode toggle
+  * Hapus akun (dengan konfirmasi)
 * Log Aktivitas:
 
-  * Aktivitas tercatat dari backend
-  * Paginasi dan lompat halaman
-* Konfirmasi hapus (native confirm)
+  * Menampilkan semua aktivitas pengguna
+  * Paginasi & filtering
 
-### UX & Responsivitas
+### 🗵️ UX & Responsivitas
 
-* Tailwind CSS: utility-first design
-* Komponen responsif & reusable (Button, Input, Table, PageWrapper, dll)
-* Hover effect, rounded corner, soft shadows
+* Tailwind CSS v4: utility-first responsive design
+* Komponen reusable: `Button`, `Input`, `Select`, `PageWrapper`, dll
+* Efek hover, shadow lembut, dan rounded corner
 * Dark mode tersedia
+* Ikon menggunakan `react-icons`
 
 ---
 
-## Teknologi yang Digunakan
+## 🔧 Teknologi yang Digunakan
 
 ### Backend
 
 * Python + Pyramid
-* PostgreSQL
-* RESTful API
-* Session-based Authentication (SignedCookie)
-* Custom middleware (auth\_tween)
-* Log aktivitas terintegrasi
-* Validasi input backend
+* SQLAlchemy ORM + PostgreSQL
+* RESTful API lengkap (`GET`, `POST`, `PUT`, `DELETE`)
+* Session-based authentication (SignedCookie)
+* Custom middleware: `auth_tween` untuk proteksi endpoint
+* Alembic untuk migrasi skema database
+* Log aktivitas pengguna
+* Pytest untuk unit testing dengan coverage ≥ 60%
 
 ### Frontend
 
 * React JS (Hooks & Functional Components)
 * React Router DOM
-* Tailwind CSS
-* Virtualized rendering: react-window
+* Tailwind CSS (custom styling, responsive)
 * Context API:
 
-  * AuthContext
-  * SettingsContext (nama toko)
-  * SidebarContext
+  * `AuthContext` (login/logout/me)
+  * `SettingsContext` (nama toko, dark mode)
+  * `SidebarContext` (sidebar toggle)
+* Fetch API untuk komunikasi backend
+* Virtualized list: `react-window`
+* Ikon UI: `react-icons`
 
 ---
 
-## Struktur Folder
+## 🗂️ Struktur Folder
 
 ```
 /src
 ├── components/       # Navbar, Sidebar, Layout, Reusable UI
-├── pages/            # Dashboard, Produk, Kategori, Log, Pengaturan
+├── pages/            # Dashboard, Produk, Kategori, Log, Pengaturan, dll
 ├── context/          # Auth, Settings, Sidebar
-├── services/         # (rencana integrasi Axios API wrapper)
-├── utils/            # Constants, helpers
+├── hooks/            # useAuth, useSettings, useDarkMode
+├── services/         # (rencana: integrasi Axios)
+├── utils/            # Konstanta & helper
 ├── App.jsx
-├── main.jsx
-```
-
-## Instalasi & Setup
-
-### Frontend:
-
-```bash
-npm install
-npm run dev
-```
-
-### Backend (Python Pyramid):
-
-```bash
-pip install -e .
-pserve development.ini
+└── main.jsx
 ```
 
 ---
 
-## Author
+## ⚙️ Instalasi & Setup
 
-Nama: **Jhoel Robert Sugiono Hutagalung**
-NIM : **122140174**
+### Backend (Python Pyramid)
 
-> Project ini sebelumnya dikembangkan di akun lain (**Arkyna**), dan dimirror ke akun resmi (**JhoelRobert174**) untuk kebutuhan akademik. Silakan lihat bagian *Contributors* pada repositori untuk riwayat kontribusi.
+```bash
+cd backend
+python3 -m venv env
+source env/bin/activate        # Linux/Mac
+env\Scripts\activate           # Windows
+
+pip install -e ".[testing]"
+alembic -c development.ini revision --autogenerate -m "initial schema"
+alembic -c development.ini upgrade head
+initialize_backend_db development.ini
+
+pytest                         # untuk menjalankan unit test
+pserve development.ini         # menjalankan server lokal
+```
+
+### Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 📜 Pemenuhan Spesifikasi Akademik
+
+| Kriteria                                      |
+| --------------------------------------------- |
+| CRUD pada 2+ entitas (Produk, Kategori, User) |
+| Gunakan PostgreSQL sebagai database           |
+| RESTful API + autentikasi                     |
+| Frontend React + Router + Hooks               |
+| TailwindCSS + Context API                     |
+| Minimal 3 commit per minggu                   |
+| Unit test coverage ≥ 60% untuk fungsi kritis  |
+| Link GitHub dan NIM pada repo                 |
+
+---
+
+## 👤 Author
+
+* **Nama:** Jhoel Robert Sugiono Hutagalung
+* **NIM:** 122140174
+* 💡 *Project ini sebelumnya dikembangkan di akun lain (**Arkyna**) dan dimirror ke akun resmi (**JhoelRobert174**) untuk kebutuhan akademik.*
+
+> Lihat bagian **Contributors** di GitHub untuk riwayat kontribusi lebih lanjut.
+
+---
+
+## Pytest:
+
+![Image](https://github.com/user-attachments/assets/d1e4730c-40b3-4217-b532-f519cc64f5a0)
+
+---
+
+## Reference:
+
+* [Material Design Dark Theme](https://m2.material.io/design/color/dark-theme.html)
+* [Tailwind CSS Dark Mode Docs](https://tailwindcss.com/docs/dark-mode)
