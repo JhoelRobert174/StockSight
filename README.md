@@ -165,7 +165,7 @@ npm run dev
 
 ## Pytest:
 
-![Image](https://github.com/user-attachments/assets/d1e4730c-40b3-4217-b532-f519cc64f5a0)
+![Image](https://github.com/user-attachments/assets/3c84b295-b73c-4db4-95ac-1e07f9a58f89)
 
 ---
 
