@@ -81,12 +81,12 @@ function KategoriForm() {
             value={nama}
             onChange={(e) => setNama(e.target.value)}
             placeholder="Nama Kategori"
-            variant="dry"
+            type="text"
             disabled={loading && !isEdit}
           />
         </div>
         <div className="flex justify-between">
-          <Button type="submit" color="blue" disabled={loading}>
+          <Button type="submit" color="purblue" disabled={loading}>
             {loading ? (isEdit ? 'Menyimpan...' : 'Menambahkan...') : 'Simpan'}
           </Button>
           <Button

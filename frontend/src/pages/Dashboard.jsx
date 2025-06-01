@@ -15,11 +15,11 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
   const { name, value } = payload[0]
   return (
-    <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-3 rounded shadow text-sm">
+    <div className="bg-white dark:bg-[#2C2C2C] text-gray-800 dark:text-[#E4E4E4] p-3 rounded shadow text-sm">
       <div className="font-semibold">{label || name}</div>
       <div>
         <span className="text-gray-600 dark:text-gray-300">stok:</span>{" "}
-        <span className="text-blue-600 dark:text-blue-400">{value}</span>
+        <span className="text-blue-600 dark:text-[#BB86FC]">{value}</span>
       </div>
     </div>
   )
@@ -29,11 +29,11 @@ const HargaTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null
   const { waktu, harga } = payload[0].payload
   return (
-    <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-3 rounded shadow text-sm">
+    <div className="bg-white dark:bg-[#2C2C2C] text-gray-800 dark:text-[#E4E4E4] p-3 rounded shadow text-sm">
       <div className="font-semibold">{waktu}</div>
       <div>
         <span className="text-gray-600 dark:text-gray-300">Harga:</span>{" "}
-        <span className="text-blue-600 dark:text-blue-400">
+        <span className="text-blue-600 dark:text-[#BB86FC]">
           {harga.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}
         </span>
       </div>
@@ -92,7 +92,7 @@ function Dashboard() {
     <PageWrapper title="Dashboard">
       <div className="space-y-8">
         {/* Chart Total Stok */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+        <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
           <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
             Total Stok Semua Produk
           </h2>
@@ -110,7 +110,7 @@ function Dashboard() {
         {/* Grid 3 Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Pie Chart */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+          <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
             <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
               Distribusi Stok per Kategori
             </h2>
@@ -140,7 +140,7 @@ function Dashboard() {
           </div>
 
           {/* Produk List by Kategori */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+          <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
             <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
               {selectedKategori ? `Produk: ${selectedKategori}` : "Pilih kategori"}
             </h2>
@@ -176,7 +176,7 @@ function Dashboard() {
                     className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 border-b text-gray-800 dark:text-white"
                   >
                     {produkFiltered[index].nama} —{" "}
-                    <span className="text-blue-600 dark:text-blue-400">
+                    <span className="text-blue-600 dark:text-[#BB86FC]">
                       {produkFiltered[index].stok.toLocaleString()} stok
                     </span>
                   </div>
@@ -186,7 +186,7 @@ function Dashboard() {
           </div>
 
           {/* Line Chart Harga */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+          <div className="bg-white dark:bg-[#2C2C2C] p-6 rounded-xl shadow-md">
             <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
               {selectedProduk ? `Harga: ${selectedProduk.nama}` : "Pilih produk"}
             </h2>

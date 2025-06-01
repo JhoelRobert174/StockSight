@@ -1,5 +1,5 @@
 export default function Table({ minWidth = "640", className = "", children, ...props }) {
-  const base = `w-full min-w-[${minWidth}px] text-sm text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-800`
+  const base = `w-full min-w-[${minWidth}px] text-sm text-gray-700 dark:text-gray-100 bg-white dark:bg-[#2C2C2C]`
   return (
     <table className={`${base} ${className}`} {...props}>
       {children}
@@ -8,7 +8,7 @@ export default function Table({ minWidth = "640", className = "", children, ...p
 }
 
 export function Thead({ className = "", children, ...props }) {
-  const base = "bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-xs tracking-wider"
+  const base = "bg-gray-50 dark:bg-[#3F3C45] text-gray-600 dark:text-gray-300 uppercase text-xs tracking-wider"
   return (
     <thead className={`${base} ${className}`} {...props}>
       {children}
@@ -17,7 +17,7 @@ export function Thead({ className = "", children, ...props }) {
 }
 
 export function Tr({ className = "", children, ...props }) {
-  const base = "hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+  const base = "hover:bg-gray-100 dark:hover:bg-[#5600E8] transition"
   return (
     <tr className={`${base} ${className}`} {...props}>
       {children}

@@ -59,7 +59,7 @@ function ProdukList() {
     <>
       <Button
         onClick={() => navigate("/produk/tambah")}
-        color="blue"
+        color="purblue"
       >
         + Tambah Produk
       </Button>
@@ -85,7 +85,7 @@ function ProdukList() {
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
             variant="dry"
-            minWidth="min-w-[80px]"
+            minWidth="min-w-[50px]"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -164,7 +164,7 @@ function ProdukList() {
                 <Button
                   key={p}
                   onClick={() => setPage(p)}
-                  color={p === page ? "blue" : "gray"}
+                  color={p === page ? "purblue" : "gray"}
                   variant="subtle"
                   className={
                     p === page
@@ -193,13 +193,13 @@ function ProdukList() {
                 variant="compact"
                 value={gotoPage}
                 onChange={(e) => setGotoPage(e.target.value)}
-                className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm"
+                className="w-20 px-2 py-1 rounded bg-white dark:bg-[#2C2C2C] text-gray-800 dark:text-white text-sm"
                 min={1}
                 max={totalPages}
               />
               <Button
                 onClick={() => {
-                  if (gotoPage.trim() === "" || isNaN(Number(gotoPage))) return; // validasi eksplisit 
+                  if (gotoPage.trim() === "" || isNaN(Number(gotoPage))) return;
                   const target = Number(gotoPage);
                   if (target >= 1 && target <= totalPages) {
                     setPage(target)
@@ -208,7 +208,7 @@ function ProdukList() {
                   setGotoPage("")
                 }}
 
-                color="blue"
+                color="purblue"
                 variant="subtle"
               >
                 Lompat

@@ -60,7 +60,7 @@ function Login() {
       <Button
         type="submit"
         variant="wide"
-        color="blue"
+        color="purblue"
         disabled={isLoading}
       >
         {isLoading ? "Masuk..." : "Masuk"}

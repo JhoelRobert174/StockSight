@@ -16,7 +16,7 @@ export default function Layout({ children }) {
   }, [isDesktop, open, close])
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen w-full bg-gray-50 dark:bg-[#121212] text-gray-800 dark:text-gray-100 flex flex-col overflow-x-hidden">
       <Navbar />
 
       {/* Mobile click-catcher (no dimming) */}

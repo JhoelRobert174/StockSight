@@ -9,7 +9,7 @@ export default function Select({
   ...props
 }) {
   const dryStyle =
-    "px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500";
+    "px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#2C2C2C] text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#7F39FB]";
 
   const variantStyles = {
     default: "px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-800 dark:bg-gray-800 dark:text-white",

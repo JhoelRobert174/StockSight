@@ -57,7 +57,7 @@ function KategoriList() {
   const actions = (
     <Button
       onClick={() => navigate("/kategori/tambah")}
-      color="blue"
+      color="purblue"
     >
       + Tambah Kategori
     </Button>
@@ -83,7 +83,7 @@ function KategoriList() {
         value={limit}
         onChange={(e) => setLimit(Number(e.target.value))}
         variant="dry"
-        minWidth="min-w-[80px]"
+        minWidth="min-w-[50px]"
       >
         <option value={5}>5</option>
         <option value={10}>10</option>
@@ -151,7 +151,7 @@ function KategoriList() {
                   <Button
                     key={p}
                     onClick={() => setPage(p)}
-                    color={p === page ? "blue" : "gray"}
+                    color={p === page ? "purblue" : "gray"}
                     variant="subtle"
                     className={
                       p === page
@@ -180,7 +180,7 @@ function KategoriList() {
                   variant="compact"
                   value={gotoPage}
                   onChange={(e) => setGotoPage(e.target.value)}
-                  className="w-20 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-20 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7F39FB]"
                   min={1}
                   max={totalPages}
                 />
@@ -192,7 +192,7 @@ function KategoriList() {
                     }
                     setGotoPage("")
                   }}
-                  color="blue"
+                  color="purblue"
                   variant="subtle"
                 >
                   Lompat

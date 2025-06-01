@@ -22,9 +22,10 @@ export default function Button({
 
   const colors = {
     blue: "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600",
-    green: "bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600",
-    red: "bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 dark:text-white",
-    yellow: "bg-yellow-400 hover:bg-yellow-500 text-black dark:bg-yellow-300 dark:hover:bg-yellow-400 dark:text-black",
+    purblue: "bg-blue-600 hover:bg-blue-700 text-white dark:bg-[#7F39FB] dark:hover:bg-[#6100EC]",
+    green: "bg-green-600 hover:bg-green-700 text-white dark:bg-[#18cc57] dark:hover:bg-green-600",
+    red: "bg-red-600 hover:bg-red-700 text-white dark:bg-[#CA2442] dark:hover:bg-red-600 dark:text-white",
+    yellow: "bg-yellow-400 hover:bg-yellow-500 text-black dark:bg-[#f4e455] dark:hover:bg-yellow-400 dark:text-black",
     gray: "bg-gray-300 hover:bg-gray-400 text-black dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white",
     dark: "bg-gray-800 hover:bg-gray-700 text-white",
     white: "bg-white hover:bg-gray-100 text-black dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black",

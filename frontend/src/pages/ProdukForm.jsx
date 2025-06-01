@@ -135,7 +135,7 @@ return (
       <div className="flex justify-between">
         <Button
           type="submit"
-          color="blue"
+          color="purblue"
           variant="default"
         >
           Simpan
