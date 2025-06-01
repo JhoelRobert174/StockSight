@@ -197,7 +197,6 @@ def reset_password(request):
 
 @view_config(route_name='update_store_name', renderer='json', request_method='PUT')
 def update_store_name(request):
-    print("🔥 update_store_name CALLED")
     session = request.dbsession
     user_id = request.session.get('user_id')
 
