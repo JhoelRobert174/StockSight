@@ -6,8 +6,16 @@ from backend.models.harga_produk import HargaProduk # Tetap diimport jika ada pe
 from backend.views.auth import hash_password
 from decimal import Decimal # Diperlukan jika ingin membandingkan harga desimal secara presisi
 
+# Define test categories for better organization
+pytestmark = pytest.mark.produk
+
 # Helper function dari kode Anda
 def setup_user_and_kategori(testapp, dbsession):
+    """Helper function to set up a test user and category for product tests.
+    
+    Returns:
+        tuple: (user_id, kategori_id, cookie) - IDs and auth cookie for testing
+    """
     user = User(
         email='produkuser@example.com',
         username='produkuser',
@@ -30,7 +38,10 @@ def setup_user_and_kategori(testapp, dbsession):
 
 # --- Tes dari Kode Anda (Sudah Berfungsi) ---
 
+@pytest.mark.api
+@pytest.mark.db
 def test_create_produk_success(testapp, dbsession):
+    """Test successful product creation with valid data."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     produk_data = {
         "nama": "Produk Tes Sukses",
@@ -41,10 +52,13 @@ def test_create_produk_success(testapp, dbsession):
     res = testapp.post_json('/produk', produk_data, headers={'Cookie': cookie}, status=200)
     data = res.json
 
-    assert 'id' in data
-    assert data.get('message') == 'Produk berhasil ditambahkan'
+    assert 'id' in data, "Response should include product ID"
+    assert data.get('message') == 'Produk berhasil ditambahkan', "Should return success message"
 
+@pytest.mark.api
+@pytest.mark.db
 def test_create_produk_duplicate_nama(testapp, dbsession):
+    """Test that product creation fails when using a duplicate name."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     payload = {
         "nama": "Produk Duplikat Test",
@@ -57,10 +71,13 @@ def test_create_produk_duplicate_nama(testapp, dbsession):
     res = testapp.post_json('/produk', payload, headers={'Cookie': cookie}, status=400)
 
     error = res.json.get('error', '').lower()
-    assert 'sudah ada' in error or 'sudah digunakan' in error or 'sudah' in error
+    assert 'sudah ada' in error or 'sudah digunakan' in error or 'sudah' in error, "Should show error for duplicate product name"
 
 
+@pytest.mark.api
+@pytest.mark.db
 def test_get_produk_detail_success(testapp, dbsession):
+    """Test successful retrieval of product details."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     produk_data = {
         "nama": "Produk Detail Test Get", # Nama diubah sedikit
@@ -72,11 +89,14 @@ def test_get_produk_detail_success(testapp, dbsession):
     produk_id = res_create.json['id']
 
     res_get = testapp.get(f'/produk/{produk_id}', headers={'Cookie': cookie}, status=200)
-    assert res_get.json['id'] == produk_id
-    assert res_get.json['nama'] == produk_data['nama']
-    assert res_get.json['stok'] == produk_data['stok']
+    assert res_get.json['id'] == produk_id, "Retrieved product ID should match created product ID"
+    assert res_get.json['nama'] == produk_data['nama'], "Retrieved product name should match created product name"
+    assert res_get.json['stok'] == produk_data['stok'], "Retrieved product stock should match created product stock"
 
+@pytest.mark.api
+@pytest.mark.db
 def test_update_produk_success(testapp, dbsession):
+    """Test successful product update with valid data."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     res_create = testapp.post_json('/produk', {
         "nama": "Produk Lama Update Test", # Nama diubah sedikit
@@ -92,15 +112,18 @@ def test_update_produk_success(testapp, dbsession):
         "harga": 9000 # Harga bisa juga string "9000.00" jika API mengharapkan Numeric presisi
     }
     res_update = testapp.put_json(f'/produk/{produk_id}', update_payload, headers={'Cookie': cookie}, status=200)
-    assert 'message' in res_update.json # Sesuai contoh Anda
+    assert 'message' in res_update.json, "Update response should include success message"
     # Verifikasi tambahan (opsional tapi baik)
     res_get = testapp.get(f'/produk/{produk_id}', headers={'Cookie': cookie}, status=200)
-    assert res_get.json['nama'] == update_payload['nama']
-    assert res_get.json['stok'] == update_payload['stok']
-    assert float(res_get.json['harga']) == float(update_payload['harga'])
+    assert res_get.json['nama'] == update_payload['nama'], "Updated product name should match new name"
+    assert res_get.json['stok'] == update_payload['stok'], "Updated product stock should match new stock"
+    assert float(res_get.json['harga']) == float(update_payload['harga']), "Updated product price should match new price"
 
 
+@pytest.mark.api
+@pytest.mark.db
 def test_delete_produk_success(testapp, dbsession):
+    """Test successful product deletion."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     res_create = testapp.post_json('/produk', {
         "nama": "Produk Akan Dihapus Test", # Nama diubah sedikit
@@ -111,16 +134,19 @@ def test_delete_produk_success(testapp, dbsession):
     produk_id = res_create.json['id']
 
     # Pastikan produk ada sebelum dihapus
-    assert dbsession.query(Produk).filter_by(id=produk_id).one_or_none() is not None
+    assert dbsession.query(Produk).filter_by(id=produk_id).one_or_none() is not None, "Product should exist before deletion"
 
     res_delete = testapp.delete(f'/produk/{produk_id}', headers={'Cookie': cookie}, status=200)
-    assert 'message' in res_delete.json # Sesuai contoh Anda
-    assert 'berhasil dihapus' in res_delete.json['message'].lower()
+    assert 'message' in res_delete.json, "Delete response should include success message"
+    assert 'berhasil dihapus' in res_delete.json['message'].lower(), "Message should confirm successful deletion"
 
     # Verifikasi di database bahwa produk sudah tidak ada
-    assert dbsession.query(Produk).filter_by(id=produk_id).one_or_none() is None
+    assert dbsession.query(Produk).filter_by(id=produk_id).one_or_none() is None, "Product should not exist after deletion"
 
-def test_mutasi_stok_masuk(testapp, dbsession): # Dari kode Anda
+@pytest.mark.api
+@pytest.mark.db
+def test_mutasi_stok_masuk(testapp, dbsession):
+    """Test successful stock addition mutation."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     res_create = testapp.post_json('/produk', {
         "nama": "Produk Mutasi Test", # Nama diubah sedikit
@@ -134,9 +160,12 @@ def test_mutasi_stok_masuk(testapp, dbsession): # Dari kode Anda
         "aksi": "masuk",
         "jumlah": 5
     }, headers={'Cookie': cookie}, status=200)
-    assert res_mutasi.json['stok_sisa'] == 15
+    assert res_mutasi.json['stok_sisa'] == 15, "Stock should be increased by the mutation amount"
 
-def test_produk_by_kategori(testapp, dbsession): # Dari kode Anda
+@pytest.mark.api
+@pytest.mark.db
+def test_produk_by_kategori(testapp, dbsession):
+    """Test successful retrieval of products by category."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     testapp.post_json('/produk', {
         "nama": "Produk Kategori A Test", # Nama diubah sedikit
@@ -153,13 +182,16 @@ def test_produk_by_kategori(testapp, dbsession): # Dari kode Anda
     }, headers={'Cookie': cookie}, status=200)
 
     res = testapp.get(f'/produk/kategori/{kategori_id}', headers={'Cookie': cookie}, status=200)
-    assert 'data' in res.json
-    assert isinstance(res.json['data'], list)
-    assert len(res.json['data']) >= 2 # Pastikan minimal 2 produk yang baru dibuat ada di sana
+    assert 'data' in res.json, "Response should include data field"
+    assert isinstance(res.json['data'], list), "Data field should be a list"
+    assert len(res.json['data']) >= 2, "Should return at least the 2 products we created"
     for item in res.json['data']:
         assert item['kategori_id'] == kategori_id
 
-def test_mutasi_riwayat_disabled(testapp, dbsession): # Dari kode Anda
+@pytest.mark.api
+@pytest.mark.db
+def test_mutasi_riwayat_disabled(testapp, dbsession):
+    """Test that mutation history endpoint is disabled."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
     # Membuat produk secara langsung ke DB untuk tes ini karena endpoint produk mungkin tidak mengizinkan harga 0 atau stok 0
     produk = Produk(
@@ -174,11 +206,14 @@ def test_mutasi_riwayat_disabled(testapp, dbsession): # Dari kode Anda
 
     res = testapp.get(f'/produk/{produk.id}/mutasi-riwayat', headers={'Cookie': cookie}, status=410) # 410 Gone
     assert 'error' in res.json
-    assert 'dinonaktifkan' in res.json['error'].lower()
+    assert 'dinonaktifkan' in res.json['error'].lower(), "Error should indicate feature is disabled"
 
 # --- Tes Tambahan dari Rancangan test_produk_crud.py (Disesuaikan) ---
 
+@pytest.mark.api
+@pytest.mark.db
 def test_create_produk_missing_fields(testapp, dbsession):
+    """Test that product creation fails with missing required fields."""
     user_id, kategori_id, cookie = setup_user_and_kategori(testapp, dbsession)
 
     # Kasus 1: Nama kosong

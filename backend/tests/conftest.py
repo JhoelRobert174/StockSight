@@ -2,6 +2,7 @@ import alembic
 import alembic.config
 import alembic.command
 import os
+import time
 from pyramid.paster import get_appsettings
 from pyramid.scripting import prepare
 from pyramid.testing import DummyRequest, testConfig
@@ -13,9 +14,14 @@ from backend import main
 from backend import models
 from backend.models.meta import Base
 
+# Dictionary to store test execution times
+_test_times = {}
+
 
 def pytest_addoption(parser):
     parser.addoption('--ini', action='store', metavar='INI_FILE')
+    parser.addoption('--html', action='store', help='Create HTML report file at given path')
+    parser.addoption('--verbose-tests', action='store_true', help='Show more detailed test output')
 
 @pytest.fixture(scope='session')
 def ini_file(request):
@@ -130,3 +136,44 @@ def dummy_config(dummy_request):
     """
     with testConfig(request=dummy_request) as config:
         yield config
+
+
+# Hooks for better test reporting
+@pytest.hookimpl(tryfirst=True)
+def pytest_runtest_setup(item):
+    _test_times[item.nodeid] = time.time()
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_runtest_teardown(item):
+    _test_times[item.nodeid] = time.time() - _test_times.get(item.nodeid, time.time())
+
+
+def pytest_report_teststatus(report):
+    if report.when == 'call':
+        duration = _test_times.get(report.nodeid, 0)
+        if duration > 1.0:  # Highlight slow tests
+            return report.outcome, f'{report.outcome}', f'SLOW: {duration:.2f}s'
+
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    if exitstatus == 0:
+        terminalreporter.write_sep('=', 'StockSight Test Summary')
+        passed = len(terminalreporter.stats.get('passed', []))
+        failed = len(terminalreporter.stats.get('failed', []))
+        skipped = len(terminalreporter.stats.get('skipped', []))
+        total = passed + failed + skipped
+        terminalreporter.write_line(f'Total tests: {total}')
+        terminalreporter.write_line(f'Passed: {passed} ({passed/total*100:.1f}%)')
+        if failed:
+            terminalreporter.write_line(f'Failed: {failed} ({failed/total*100:.1f}%)')
+        if skipped:
+            terminalreporter.write_line(f'Skipped: {skipped} ({skipped/total*100:.1f}%)')
+        
+        # Show slowest tests
+        terminalreporter.write_sep('=', 'Slowest Tests')
+        durations = [(nodeid, duration) for nodeid, duration in _test_times.items()]
+        durations.sort(key=lambda x: x[1], reverse=True)
+        for nodeid, duration in durations[:5]:  # Show top 5 slowest tests
+            if duration > 0.1:  # Only show tests that took more than 0.1s
+                terminalreporter.write_line(f'{nodeid}: {duration:.2f}s')
