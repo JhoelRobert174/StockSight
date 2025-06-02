@@ -16,8 +16,16 @@ function MutasiProdukForm() {
     harga: ""
   })
 
+  function formatNumber(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
+
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [displayHarga, setDisplayHarga] = useState("")
+
+
 
   useEffect(() => {
     fetch(`${API_BASE}/produk/${id}`, { credentials: "include" })
@@ -25,8 +33,10 @@ function MutasiProdukForm() {
       .then(data => {
         setProdukNama(data.nama)
         setForm(prev => ({ ...prev, harga: data.harga }))
+        setDisplayHarga(formatNumber(data.harga || 0))
         setLoading(false)
       })
+
       .catch(err => {
         console.error(err)
         setError("Gagal memuat data produk")
@@ -35,11 +45,21 @@ function MutasiProdukForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+
+    if (name === "harga") {
+      const rawValue = value.replace(/\./g, "")
+      const parsed = parseInt(rawValue) || 0
+      setDisplayHarga(formatNumber(rawValue))
+      setForm(prev => ({ ...prev, harga: parsed }))
+      return
+    }
+
     setForm(prev => ({
       ...prev,
       [name]: name === "jumlah" ? parseInt(value) : value
     }))
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -102,12 +122,13 @@ function MutasiProdukForm() {
 
         <Input
           name="harga"
-          type="number"
-          value={form.harga}
+          type="text"
+          value={displayHarga}
           onChange={handleChange}
           placeholder="Harga (opsional)"
           variant="dry"
         />
+
 
         <div className="flex justify-between">
           <Button type="submit" color="purblue" variant="default">

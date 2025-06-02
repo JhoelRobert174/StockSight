@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react"
-import { useAuth } from "../hooks/useAuth"
-import { Navigate } from "react-router-dom"
-import { API_BASE } from "../constants/config"
-import {
-  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
-  LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar,
-} from "recharts"
 import { FixedSizeList as List } from "react-window"
-import { PanelTitle, Input, Select, PageWrapper } from "@/components/ui"
-import { FiBarChart2, FiPieChart, FiList, FiTrendingUp, FiGrid } from "react-icons/fi"
+import { Navigate } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
+import { API_BASE } from "../constants/config"
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar} from "recharts"
+import { PanelTitle, Input, Button, PageWrapper } from "@/components/ui"
+import { FiBarChart2, FiPieChart, FiList, FiTrendingUp, FiGrid, FiX } from "react-icons/fi"
 
-const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1"]
+const PRODUK_COLORS = ["#8B5CF6", "#EC4899", "#06B6D4", "#F97316", "#84CC16"]
+const KATEGORI_COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1"]
+
+
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
@@ -42,6 +42,7 @@ const HargaTooltip = ({ active, payload }) => {
   )
 }
 
+
 function Dashboard() {
   const { user, loading } = useAuth()
   const [produkList, setProdukList] = useState([])
@@ -49,6 +50,11 @@ function Dashboard() {
   const [selectedKategori, setSelectedKategori] = useState(null)
   const [selectedProduk, setSelectedProduk] = useState(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const resetFilter = () => {
+    setSelectedKategori(null)
+    setSelectedProduk(null)
+  }
+
 
   useEffect(() => {
     fetch(`${API_BASE}/produk`, { credentials: "include" })
@@ -101,7 +107,12 @@ function Dashboard() {
               <XAxis dataKey="nama" />
               <YAxis />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="stok" fill="#3B82F6" />
+              <Bar dataKey="stok">
+  {produkList.map((_, index) => (
+    <Cell key={`bar-${index}`} fill={PRODUK_COLORS[index % PRODUK_COLORS.length]} />
+  ))}
+</Bar>
+
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -127,7 +138,7 @@ function Dashboard() {
                   }}
                 >
                   {kategoriStok.map((_, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={index} fill={KATEGORI_COLORS[index % KATEGORI_COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
@@ -142,45 +153,60 @@ function Dashboard() {
               {selectedKategori ? `Produk: ${selectedKategori}` : "Pilih kategori"}
             </PanelTitle>
 
-            {selectedKategori && (
+            {selectedKategori ? (
               <>
-                <Input
-                  type="text"
-                  placeholder="Cari produk..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  variant="text"
-                />
-                <button
-                  onClick={() => setSelectedKategori(null)}
-                  className="text-sm text-blue-600 underline mb-4"
-                >
-                  Hapus filter
-                </button>
-              </>
-            )}
-            <div className="max-h-64 overflow-y-auto">
-              <List
-                height={250}
-                itemCount={produkFiltered.length}
-                itemSize={50}
-                width={"100%"}
-              >
-                {({ index, style }) => (
-                  <div
-                    style={style}
-                    key={produkFiltered[index].id}
-                    onClick={() => setSelectedProduk(produkFiltered[index])}
-                    className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 border-b text-gray-800 dark:text-white"
+                <div className="flex items-center gap-2 mb-4">
+                  <Input
+                    type="text"
+                    placeholder="Cari produk..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    variant="text"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    onClick={resetFilter}
+                    color="red"
+                    variant="outline"
+                    title="Hapus filter kategori"
+                    className="p-2"
                   >
-                    {produkFiltered[index].nama} — {" "}
-                    <span className="text-blue-600 dark:text-[#BB86FC]">
-                      {produkFiltered[index].stok.toLocaleString()} stok
-                    </span>
-                  </div>
-                )}
-              </List>
-            </div>
+                    <FiX className="w-5 h-5" />
+                  </Button>
+
+                </div>
+
+
+                <div className="max-h-64 overflow-y-auto">
+                  <List
+                    height={250}
+                    itemCount={produkFiltered.length}
+                    itemSize={50}
+                    width={"100%"}
+                  >
+                    {({ index, style }) => (
+                      <div
+                        style={style}
+                        key={produkFiltered[index].id}
+                        onClick={() => setSelectedProduk(produkFiltered[index])}
+                        className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 border-b text-gray-800 dark:text-white"
+                      >
+                        {produkFiltered[index].nama} —{" "}
+                        <span className="text-blue-600 dark:text-[#BB86FC]">
+                          {produkFiltered[index].stok.toLocaleString()} stok
+                        </span>
+                      </div>
+                    )}
+                  </List>
+                </div>
+              </>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400 italic mt-4 text-center">
+                Pilih kategori dari diagram untuk melihat produk.
+              </p>
+            )}
+
           </div>
 
           {/* Line Chart Harga */}
@@ -216,8 +242,8 @@ function Dashboard() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <p className="text-gray-400 dark:text-gray-500">
-                Pilih produk untuk melihat grafik harga.
+              <p className="text-gray-500 dark:text-gray-400 italic mt-4 text-center">
+                Pilih produk di atas untuk melihat grafik harga.
               </p>
             )}
           </div>

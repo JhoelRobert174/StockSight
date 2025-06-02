@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
 import { Button, Input, PageWrapper, Select, Table, Thead, Tbody, Tr, Th, Td, PanelTitle, Loading } from "@/components/ui"
-import { FiLayers, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi"
+import { FiLayers, FiPlus, FiEdit2, FiTrash2, FiSearch } from "react-icons/fi"
 
 function KategoriList() {
   const navigate = useNavigate()
@@ -70,13 +70,18 @@ function KategoriList() {
   return (
     <PageWrapper title={title} actions={actions}>
       <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
-        <Input
-          type="text"
-          placeholder="Cari kategori..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          expand
-        />
+        <div className="relative w-full sm:w-auto">
+          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+          <Input
+            type="text"
+            placeholder="Cari Kategori..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+            expand
+          />
+        </div>
+
         <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
           <span>Tampilkan:</span>
           <Select

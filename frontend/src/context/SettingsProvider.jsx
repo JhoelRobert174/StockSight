@@ -8,7 +8,6 @@ export default function SettingsProvider({ children }) {
   const [rawNamaToko, setRawNamaToko] = useState("")
   const [loading, setLoading] = useState(true)
 
-  // 🧠 Move fetchSettings out of useEffect, and wrap in useCallback for stability
   const fetchSettings = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE}/me`, {
@@ -49,7 +48,7 @@ export default function SettingsProvider({ children }) {
     await fetchSettings()
   }
 
-  const namaToko = `${rawNamaToko} Store`
+  const namaToko = `${rawNamaToko} Inventory Dashboard`
 
   const deleteAccount = async () => {
     const res = await fetch(`${API_BASE}/me/delete-account`, {

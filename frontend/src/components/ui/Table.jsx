@@ -1,5 +1,13 @@
-export default function Table({ minWidth = "640", className = "", children, ...props }) {
-  const base = `w-full min-w-[${minWidth}px] text-sm text-gray-700 dark:text-gray-100 bg-white dark:bg-[#2C2C2C]`
+export default function Table({
+  minWidth = "640",
+  className = "",
+  layout = "auto", // "fixed" atau "auto"
+  children,
+  ...props
+}) {
+  const layoutClass = layout === "fixed" ? "table-fixed" : "table-auto"
+  const base = `w-full min-w-[${minWidth}px] text-sm text-gray-700 dark:text-gray-100 bg-white dark:bg-[#2C2C2C] ${layoutClass}`
+
   return (
     <table className={`${base} ${className}`} {...props}>
       {children}

@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { Button, Input, FormWrapper, Message } from "@/components/ui"
+import { Link } from "react-router-dom"
+
 
 function Login() {
   const [username, setUsername] = useState("")
@@ -68,16 +70,17 @@ function Login() {
 
       <p className="mt-4 text-center text-black dark:text-gray-400">
         Belum punya akun?{" "}
-        <a href="/register" className="text-blue-600 dark:text-blue-400 underline">
+        <Link to="/register" className="text-blue-600 dark:text-blue-400 underline">
           Daftar di sini
-        </a>
+        </Link>
       </p>
       <p className="mt-2 text-center text-black dark:text-gray-400">
         Lupa password?{" "}
-        <a href="/verify" className="text-blue-600 dark:text-blue-400 underline">
+        <Link to="/verify" className="text-blue-600 dark:text-blue-400 underline">
           Reset di sini
-        </a>
+        </Link>
       </p>
+
     </FormWrapper>
   )
 }

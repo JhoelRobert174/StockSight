@@ -22,6 +22,8 @@ function ProdukForm() {
   const [kategoriList, setKategoriList] = useState([])
   const [loading, setLoading] = useState(isEdit)
   const [error, setError] = useState(null)
+  const [displayHarga, setDisplayHarga] = useState("")
+
 
   useEffect(() => {
     fetch(`${API_BASE}/kategori`, { credentials: "include" })
@@ -42,20 +44,39 @@ function ProdukForm() {
             stok: data.stok,
             harga: data.harga
           })
+
+          setDisplayHarga(formatNumber(data.harga || 0))
           setLoading(false)
         })
+
         .catch(err => setError(err))
     }
   }, [id, isEdit, kategoriList])
 
+  function formatNumber(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
+
+
   const handleChange = (e) => {
     const { name, value } = e.target
+
+    if (name === "harga") {
+      // Bersihkan titik, lalu parse ke integer
+      const rawValue = value.replace(/\./g, "")
+      const parsed = parseInt(rawValue) || 0
+
+      setDisplayHarga(formatNumber(rawValue))
+      setForm({ ...form, harga: parsed })
+      return
+    }
+
     setForm({
       ...form,
-      [name]: ["stok", "harga", "kategori_id"].includes(name) ? parseInt(value) : value
+      [name]: ["stok", "kategori_id"].includes(name) ? parseInt(value) : value
     })
-
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -88,7 +109,7 @@ function ProdukForm() {
   }
 
   if (loading) return <Loading text="Mengambil data produk..." />
-  
+
   return (
     <PageWrapper
       title={
@@ -137,12 +158,13 @@ function ProdukForm() {
 
         <Input
           name="harga"
-          type="number"
-          value={form.harga}
+          type="text"
+          value={displayHarga}
           onChange={handleChange}
           placeholder="Harga"
           variant="dry"
         />
+
 
         <div className="flex justify-between">
           <Button type="submit"

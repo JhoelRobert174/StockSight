@@ -1,14 +1,13 @@
 import { useEffect } from "react"
+import { useSidebar } from "../hooks/useSidebar"
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
-import { useSidebar } from "../hooks/useSidebar"
 import useIsDesktop from "../hooks/useIsDesktop"
 
 export default function Layout({ children }) {
   const { open, close } = useSidebar()
   const isDesktop = useIsDesktop()
 
-  // Auto-close sidebar when switching to desktop
   useEffect(() => {
     if (isDesktop && open) {
       close()
@@ -18,8 +17,6 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen w-full bg-gray-50 dark:bg-[#121212] text-gray-800 dark:text-gray-100 flex flex-col overflow-x-hidden">
       <Navbar />
-
-      {/* Mobile click-catcher (no dimming) */}
       {!isDesktop && open && (
         <div
           className="fixed inset-0 z-30"

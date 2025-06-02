@@ -2,13 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_BASE } from "../constants/config"
 import { Loading, PageWrapper, Select, Button, Input, Table, Thead, Tbody, Tr, Th, Td, PanelTitle } from "@/components/ui"
-import {
-  FiPackage,
-  FiPlus,
-  FiEdit2,
-  FiTrash2,
-  FiRepeat,
-} from "react-icons/fi"
+import { FiPackage, FiPlus, FiEdit2, FiTrash2, FiRepeat, FiSearch } from "react-icons/fi"
 
 
 function ProdukList() {
@@ -20,23 +14,39 @@ function ProdukList() {
   const [limit, setLimit] = useState(10)
   const [totalPages, setTotalPages] = useState(1)
   const [gotoPage, setGotoPage] = useState("")
+  const debouncedSearch = useDebounce(searchTerm, 400)
+
+  function useDebounce(value, delay = 500) {
+  const [debounced, setDebounced] = useState(value)
 
   useEffect(() => {
-    setLoading(true)
-    fetch(`${API_BASE}/produk?page=${page}&limit=${limit}&q=${encodeURIComponent(searchTerm)}`, {
-      credentials: "include"
+    const handler = setTimeout(() => {
+      setDebounced(value)
+    }, delay)
+
+    return () => clearTimeout(handler)
+  }, [value, delay])
+
+  return debounced
+}
+
+useEffect(() => {
+  setLoading(true)
+  fetch(`${API_BASE}/produk?page=${page}&limit=${limit}&q=${encodeURIComponent(debouncedSearch)}`, {
+    credentials: "include"
+  })
+    .then(res => res.ok ? res.json() : Promise.reject("Gagal ambil data produk"))
+    .then(data => {
+      setProdukList(data.data || [])
+      setTotalPages(Math.ceil((data.meta?.total || 0) / limit))
     })
-      .then(res => res.ok ? res.json() : Promise.reject("Gagal ambil data produk"))
-      .then(data => {
-        setProdukList(data.data || [])
-        setTotalPages(Math.ceil((data.meta?.total || 0) / limit))
-      })
-      .catch(err => {
-        console.error(err)
-        setProdukList([])
-      })
-      .finally(() => setLoading(false))
-  }, [page, limit, searchTerm])
+    .catch(err => {
+      console.error(err)
+      setProdukList([])
+    })
+    .finally(() => setLoading(false))
+}, [page, limit, debouncedSearch])
+
 
   useEffect(() => {
     setPage(1)
@@ -78,13 +88,17 @@ function ProdukList() {
   return (
     <PageWrapper title={title} actions={actions}>
       <div className="flex justify-between items-center mb-4 gap-4 flex-col sm:flex-row">
-        <Input
-          type="text"
-          placeholder="Cari produk..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          expand
-        />
+        <div className="relative w-full sm:w-auto">
+  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+  <Input
+    type="text"
+    placeholder="Cari produk..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="pl-9" // Padding kiri biar teks nggak numpuk icon
+    expand
+  />
+</div>
         <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
           Tampilkan: {" "}
           <Select
