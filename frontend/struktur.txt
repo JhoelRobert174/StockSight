@@ -1,5 +1,3 @@
-Folder PATH listing for volume Data
-Volume serial number is 0A83-963D
 D:.
 �   .gitignore
 �   eslint.config.js
@@ -10,43 +8,67 @@ D:.
 �   tailwind.config.js
 �   vite.config.js
 �   
++---node_modules         
 +---public
+�       favicon.png
 �       vite.svg
 �       
 +---src
     �   App.jsx
     �   index.css
     �   main.jsx
-    �   styles.css
     �   
     +---assets
     �       react.svg
     �       
     +---components
-    �       Layout.jsx
-    �       Modal.jsx
-    �       Navbar.jsx
-    �       Sidebar.jsx
-    �       TableProduk.jsx
+    �   �   Layout.jsx
+    �   �   Navbar.jsx
+    �   �   ProtectedLayout.jsx
+    �   �   ProtectedRoute.jsx
+    �   �   Sidebar.jsx
+    �   �   
+    �   +---ui
+    �           Button.jsx
+    �           FormWrapper.jsx
+    �           index.jsx
+    �           Input.jsx
+    �           Loading.jsx
+    �           Message.jsx
+    �           PageWrapper.jsx
+    �           PanelTitle.jsx
+    �           Select.jsx
+    �           Table.jsx
+    �           
+    +---constants
+    �       config.js
     �       
     +---context
     �       AuthContext.jsx
-    �       DataContext.jsx
+    �       AuthProvider.jsx
+    �       SettingsContext.jsx
+    �       SettingsProvider.jsx
+    �       SidebarContext.jsx
+    �       SidebarProvider.jsx
+    �       
+    +---hooks
+    �       useAuth.js
+    �       useDarkMode.js
+    �       useIsDesktop.js
+    �       useSettings.js
+    �       useSidebar.js
     �       
     +---pages
-    �       Dashboard.jsx
-    �       KategoriForm.jsx
-    �       KategoriList.jsx
-    �       LogAktivitas.jsx
-    �       Login.jsx
-    �       Pengaturan.jsx
-    �       ProdukForm.jsx
-    �       ProdukList.jsx
-    �       
-    +---services
-    �       apiKategori.js
-    �       apiProduk.js
-    �       
-    +---utils
-            authHeader.js
+            Dashboard.jsx
+            IdentityVerifyForm.jsx
+            KategoriForm.jsx
+            KategoriList.jsx
+            LogAktivitas.jsx
+            Login.jsx
+            MutasiProdukForm.jsx
+            Pengaturan.jsx
+            ProdukForm.jsx
+            ProdukList.jsx
+            Register.jsx
+            ResetPasswordForm.jsx
             

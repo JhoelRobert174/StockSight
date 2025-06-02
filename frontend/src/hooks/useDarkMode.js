@@ -12,7 +12,6 @@ export default function useDarkMode() {
     localStorage.setItem("darkMode", darkMode.toString())
   }, [darkMode])
 
-  // optional: handle system changes if no manual toggle
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)")
     const handler = (e) => {
